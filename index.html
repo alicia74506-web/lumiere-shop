@@ -287,8 +287,7 @@ function doJoin() {
   err.textContent = '';
   if (!name) { err.textContent = '성함을 입력해주세요.'; return; }
   if (!email || !/\S+@\S+\.\S+/.test(email)) { err.textContent = '올바른 이메일을 입력해주세요.'; return; }
-  var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
-  if (!pwRegex.test(pw)) { err.textContent = '비밀번호: 8자 이상, 대소문자+숫자+특수기호(!@#$%^&*) 포함'; return; }
+  if (pw.length < 8) { err.textContent = '비밀번호는 8자 이상이어야 합니다.'; return; }
   if (pw !== pw2) { err.textContent = '비밀번호가 일치하지 않습니다.'; return; }
   if (!terms || !privacy || !age) { err.textContent = '필수 항목에 모두 동의해주세요.'; return; }
   var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
@@ -808,7 +807,7 @@ window.addEventListener('DOMContentLoaded', function(){
       <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-terms" onchange="syncAllAgree()"> (필수) 이용약관 동의</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-privacy" onchange="syncAllAgree()"> (필수) 개인정보 수집 및 이용 동의</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-age" onchange="syncAllAgree()"> (필수) 만 14세 이상입니다</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;"><input type="checkbox" id="join-marketing" onchange="syncAllAgree()"> (선택) 마케팅 정보 수신 동의 — 동의 시 10% 쿠폰 즉시 발급</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;"><input type="checkbox" id="join-marketing" onchange="syncAllAgree()"> (선택) 마케팅 정보 수신 동의 — 동의 시 10% 쿠폰 즉시 발급 🎁</label>
     </div>
     <p id="join-error" style="color:#e53935;font-size:12px;margin-bottom:12px;text-align:center;min-height:16px;"></p>
     <button onclick="doJoin()" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">회원 가입</button>
