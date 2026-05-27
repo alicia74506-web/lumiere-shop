@@ -270,7 +270,8 @@ function doLogin() {
   localStorage.setItem('lumiere_current', JSON.stringify(user));
   closeModal('login-modal');
   updateNavForLogin(user);
-  alert('환영합니다, ' + user.name + '님!');
+  checkGradeUpPopup(user);
+  checkBirthdayCoupon(user);
 }
 
 function doJoin() {
@@ -310,7 +311,7 @@ function updateNavForLogin(user) {
   var joinBtn = document.getElementById('nav-join');
   var logoutBtn = document.getElementById('nav-logout');
   var adminBtn = document.getElementById('nav-admin');
-  if (loginBtn) { loginBtn.textContent = user.name; loginBtn.onclick = null; }
+  if (loginBtn) { loginBtn.textContent = user.name; loginBtn.onclick = function(){ openMypage(); }; }
   if (joinBtn) joinBtn.style.display = 'none';
   if (logoutBtn) logoutBtn.style.display = 'inline-block';
   if (adminBtn && user.email === 'alicia@kwellroutine.com') adminBtn.style.display = 'inline-block';
@@ -860,7 +861,7 @@ window.addEventListener('DOMContentLoaded', function(){
         </div>
       </div>
       <!-- 매출 차트 -->
-      <div class="abox" style="margin-top:24px;">
+      <div style="border:1px solid #e0d4b8;border-radius:8px;padding:24px;background:#fff;margin-top:0;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
           <h3 class="abox-title" style="margin-bottom:0;border:none;padding:0;">매출 추이</h3>
           <div style="display:flex;gap:8px;">
@@ -963,23 +964,35 @@ window.addEventListener('DOMContentLoaded', function(){
       <h2 style="color:#1a1510;font-family:'Playfair Display','Cormorant Garamond',serif;font-size:28px;margin-bottom:24px;">회원 등급 관리</h2>
       <div class="abox" style="margin-bottom:24px;">
         <h3 class="abox-title">등급 기준</h3>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
           <div style="text-align:center;padding:20px;border:1px solid #e0d4b8;border-radius:6px;">
-            <p style="color:#9a8a6a;font-size:20px;margin-bottom:8px;">🤍</p>
+            <p style="font-size:24px;margin-bottom:8px;">🤍</p>
             <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">일반</p>
-            <p style="color:#9a8a6a;font-size:12px;">누적 구매 0원~</p>
+            <p style="color:#9a8a6a;font-size:11px;">0원 ~</p>
+          </div>
+          <div style="text-align:center;padding:20px;border:1px solid #c0c0c0;border-radius:6px;background:#fafafa;">
+            <p style="font-size:24px;margin-bottom:8px;">🥈</p>
+            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">실버</p>
+            <p style="color:#9a8a6a;font-size:11px;">100만원 ~</p>
+            <p style="color:#888;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
+          </div>
+          <div style="text-align:center;padding:20px;border:1px solid #cd7f32;border-radius:6px;background:#fdf8f4;">
+            <p style="font-size:24px;margin-bottom:8px;">🥉</p>
+            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">브론즈</p>
+            <p style="color:#9a8a6a;font-size:11px;">200만원 ~</p>
+            <p style="color:#cd7f32;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
           </div>
           <div style="text-align:center;padding:20px;border:1px solid #c9a84c;border-radius:6px;background:#faf6f0;">
-            <p style="color:#c9a84c;font-size:20px;margin-bottom:8px;">🥈</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">Silver</p>
-            <p style="color:#9a8a6a;font-size:12px;">누적 구매 30만원~</p>
-            <p style="color:#c9a84c;font-size:11px;margin-top:4px;">3% 추가 할인</p>
+            <p style="font-size:24px;margin-bottom:8px;">🥇</p>
+            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">골드</p>
+            <p style="color:#9a8a6a;font-size:11px;">500만원 ~</p>
+            <p style="color:#c9a84c;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
           </div>
-          <div style="text-align:center;padding:20px;border:2px solid #c9a84c;border-radius:6px;background:#faf6f0;">
-            <p style="color:#c9a84c;font-size:20px;margin-bottom:8px;">👑</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">Gold VIP</p>
-            <p style="color:#9a8a6a;font-size:12px;">누적 구매 100만원~</p>
-            <p style="color:#c9a84c;font-size:11px;margin-top:4px;">5% 추가 할인 + 무료배송</p>
+          <div style="text-align:center;padding:20px;border:2px solid #00bcd4;border-radius:6px;background:#f0faff;">
+            <p style="font-size:24px;margin-bottom:8px;">💎</p>
+            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">다이아몬드</p>
+            <p style="color:#9a8a6a;font-size:11px;">1,000만원 ~</p>
+            <p style="color:#00bcd4;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
           </div>
         </div>
       </div>
@@ -1192,6 +1205,163 @@ window.addEventListener('DOMContentLoaded', function(){
     <p style="color:#9a8a6a;font-size:13px;line-height:1.8;margin-bottom:8px;">입금 계좌 안내가 곧 문자로 발송됩니다.</p>
     <p id="order-complete-num" style="color:#c9a84c;font-size:13px;margin-bottom:32px;"></p>
     <button onclick="closeOrderComplete()" style="width:100%;padding:14px;background:#1a1a1a;color:#fff;border:none;font-size:13px;letter-spacing:2px;cursor:pointer;border-radius:4px;">확인</button>
+  </div>
+</div>
+
+
+<!-- 마이페이지 모달 -->
+<div id="mypage-overlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:4500;overflow-y:auto;font-family:'Noto Sans KR','Montserrat',sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;padding:60px 40px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;border-bottom:1px solid #f0f0f0;padding-bottom:20px;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;letter-spacing:2px;color:#1a1510;">내 계정</h2>
+      <button onclick="closeMypage()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#999;">×</button>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;">
+
+      <!-- 좌측 메뉴 -->
+      <div>
+        <ul style="list-style:none;padding:0;margin:0;">
+          <li><button onclick="mypageTab('orders')" class="mp-menu" id="mpmenu-orders">주문내역</button></li>
+          <li><button onclick="mypageTab('info')" class="mp-menu" id="mpmenu-info">회원정보</button></li>
+          <li><button onclick="mypageTab('wishlist')" class="mp-menu" id="mpmenu-wishlist">위시리스트</button></li>
+          <li><button onclick="mypageTab('coupons')" class="mp-menu" id="mpmenu-coupons">쿠폰</button></li>
+          <li><button onclick="mypageTab('addresses')" class="mp-menu" id="mpmenu-addresses">주소록</button></li>
+          <li><button onclick="mypageTab('inquiry')" class="mp-menu" id="mpmenu-inquiry">1:1 문의하기</button></li>
+          <li style="margin-top:24px;"><button onclick="doLogout()" style="background:none;border:none;font-size:13px;color:#aaa;cursor:pointer;padding:8px 0;">로그아웃</button></li>
+        </ul>
+      </div>
+
+      <!-- 우측 콘텐츠 -->
+      <div>
+
+        <!-- 주문내역 -->
+        <div id="mptab-orders" class="mptab">
+          <h3 class="mp-title">주문내역</h3>
+          <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+            <button onclick="filterMyOrders('today')" class="mp-filter active" id="mpof-today">오늘</button>
+            <button onclick="filterMyOrders('week')" class="mp-filter" id="mpof-week">1주일</button>
+            <button onclick="filterMyOrders('month')" class="mp-filter" id="mpof-month">1개월</button>
+            <button onclick="filterMyOrders('3month')" class="mp-filter" id="mpof-3month">3개월</button>
+          </div>
+          <div id="my-order-list"></div>
+        </div>
+
+        <!-- 회원정보 -->
+        <div id="mptab-info" class="mptab" style="display:none;">
+          <h3 class="mp-title">회원정보</h3>
+          <div style="display:grid;gap:16px;max-width:520px;">
+            <div>
+              <label class="mp-label">이름</label>
+              <input id="mp-name" class="mp-input" placeholder="이름">
+            </div>
+            <div>
+              <label class="mp-label">비밀번호</label>
+              <input id="mp-pw" type="password" class="mp-input" placeholder="새 비밀번호">
+            </div>
+            <div>
+              <label class="mp-label">비밀번호 확인</label>
+              <input id="mp-pw2" type="password" class="mp-input" placeholder="비밀번호 확인" oninput="checkMpPw()">
+              <p id="mp-pw-msg" style="font-size:11px;margin-top:4px;"></p>
+            </div>
+            <div>
+              <label class="mp-label">이메일</label>
+              <input id="mp-email" class="mp-input" placeholder="이메일">
+            </div>
+            <div>
+              <label class="mp-label">휴대폰</label>
+              <input id="mp-phone" class="mp-input" placeholder="010-0000-0000">
+            </div>
+            <div>
+              <label class="mp-label">우편번호</label>
+              <div style="display:flex;gap:8px;">
+                <input id="mp-postcode" class="mp-input" placeholder="우편번호" style="width:140px;">
+                <button onclick="searchMpAddress()" style="background:#1a1a1a;color:#fff;border:none;padding:10px 16px;border-radius:4px;font-size:12px;cursor:pointer;">검색</button>
+              </div>
+            </div>
+            <div>
+              <label class="mp-label">주소</label>
+              <input id="mp-address" class="mp-input" placeholder="기본주소">
+            </div>
+            <div>
+              <input id="mp-address-detail" class="mp-input" placeholder="상세주소">
+            </div>
+            <div style="background:#f8f8f8;padding:16px;border-radius:4px;">
+              <p style="font-size:12px;color:#666;margin-bottom:10px;">수신 동의</p>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="mp-email-agree"> 이메일 수신 동의
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+                <input type="checkbox" id="mp-sms-agree"> SMS 수신 동의
+              </label>
+            </div>
+            <p id="mp-info-err" style="color:#e05555;font-size:12px;"></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <button onclick="saveMyInfo()" style="padding:14px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;letter-spacing:1px;">회원 정보 수정</button>
+              <button onclick="withdrawMember()" style="padding:14px;background:#fff;color:#999;border:1px solid #ddd;border-radius:4px;font-size:13px;cursor:pointer;">계정 탈퇴</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 위시리스트 -->
+        <div id="mptab-wishlist" class="mptab" style="display:none;">
+          <h3 class="mp-title">위시리스트</h3>
+          <div id="my-wishlist"></div>
+        </div>
+
+        <!-- 쿠폰 -->
+        <div id="mptab-coupons" class="mptab" style="display:none;">
+          <h3 class="mp-title">쿠폰</h3>
+          <p id="my-coupon-count" style="font-size:13px;color:#666;margin-bottom:20px;"></p>
+          <div id="my-coupon-list"></div>
+        </div>
+
+        <!-- 주소록 -->
+        <div id="mptab-addresses" class="mptab" style="display:none;">
+          <h3 class="mp-title">주소록</h3>
+          <div id="my-address-list"></div>
+          <button onclick="openAddressForm()" style="margin-top:16px;padding:12px 24px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;">주소록 등록</button>
+          <div id="address-form" style="display:none;margin-top:24px;border:1px solid #eee;padding:24px;border-radius:4px;">
+            <h4 style="margin-bottom:16px;font-size:14px;">주소록 등록</h4>
+            <div style="display:grid;gap:12px;">
+              <input id="af-label" class="mp-input" placeholder="배송지명 (예: 집, 회사)">
+              <input id="af-name" class="mp-input" placeholder="수령인 이름">
+              <div style="display:flex;gap:8px;">
+                <input id="af-postcode" class="mp-input" placeholder="우편번호" style="flex:1;">
+                <button onclick="searchAfAddress()" style="background:#1a1a1a;color:#fff;border:none;padding:10px 16px;border-radius:4px;font-size:12px;cursor:pointer;">검색</button>
+              </div>
+              <input id="af-address" class="mp-input" placeholder="기본주소">
+              <input id="af-address-detail" class="mp-input" placeholder="상세주소">
+              <input id="af-phone" class="mp-input" placeholder="전화번호">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+                <input type="checkbox" id="af-default"> 기본 배송지로 설정
+              </label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <button onclick="saveAddress()" style="padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;">확인</button>
+                <button onclick="document.getElementById('address-form').style.display='none'" style="padding:12px;background:#fff;color:#666;border:1px solid #ddd;border-radius:4px;font-size:13px;cursor:pointer;">취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1:1 문의 -->
+        <div id="mptab-inquiry" class="mptab" style="display:none;">
+          <h3 class="mp-title">1:1 문의하기</h3>
+          <table class="mp-table" style="margin-bottom:20px;">
+            <thead><tr><th>작성일</th><th>제목</th><th>답변</th></tr></thead>
+            <tbody id="my-inquiry-list"><tr><td colspan="3" style="text-align:center;color:#aaa;padding:40px;">No articles.</td></tr></tbody>
+          </table>
+          <button onclick="openInquiryForm()" style="padding:12px 24px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;">1:1 문의하기</button>
+          <div id="inquiry-form" style="display:none;margin-top:24px;border:1px solid #eee;padding:24px;border-radius:4px;">
+            <div style="display:grid;gap:12px;">
+              <input id="inq-title" class="mp-input" placeholder="제목">
+              <textarea id="inq-content" class="mp-input" placeholder="문의 내용을 입력해주세요..." style="height:120px;resize:vertical;"></textarea>
+              <button onclick="submitInquiry()" style="padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;">문의 제출</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1422,8 +1592,9 @@ function updateMargin() {
   var el = document.getElementById('pf-margin');
   if (price && cost) {
     var margin = price - cost;
-    var rate = Math.round((margin/price)*100);
-    el.textContent = '순수익: ₩' + margin.toLocaleString() + ' (' + rate + '%) — 마진율 ' + rate + '%';
+    var profitRate = Math.round((margin/price)*100);
+    var costRate = Math.round((cost/price)*100);
+    el.innerHTML = '순이익: <strong>₩' + margin.toLocaleString() + '</strong> &nbsp;|&nbsp; 수익률: <strong>' + profitRate + '%</strong> &nbsp;|&nbsp; 원가율: <strong>' + costRate + '%</strong>';
     el.style.display = 'block';
   } else {
     el.style.display = 'none';
@@ -1592,12 +1763,16 @@ function renderDashboard() {
   var monthOrders = orders.filter(function(o){ return new Date(o.date) >= monthStart; });
 
   var t=calcSales(todayOrders), w=calcSales(weekOrders), m=calcSales(monthOrders);
+  function rate(r){ return r.rev>0?Math.round((r.profit/r.rev)*100):0; }
   document.getElementById('dash-today').textContent = '₩'+t.rev.toLocaleString();
-  document.getElementById('dash-today-profit').textContent = '순수익 ₩'+t.profit.toLocaleString();
+  document.getElementById('dash-today-profit').textContent = '순이익 ₩'+t.profit.toLocaleString();
+  document.getElementById('dash-today-rate').textContent = '수익률 '+rate(t)+'%';
   document.getElementById('dash-week').textContent = '₩'+w.rev.toLocaleString();
-  document.getElementById('dash-week-profit').textContent = '순수익 ₩'+w.profit.toLocaleString();
+  document.getElementById('dash-week-profit').textContent = '순이익 ₩'+w.profit.toLocaleString();
+  document.getElementById('dash-week-rate').textContent = '수익률 '+rate(w)+'%';
   document.getElementById('dash-month').textContent = '₩'+m.rev.toLocaleString();
-  document.getElementById('dash-month-profit').textContent = '순수익 ₩'+m.profit.toLocaleString();
+  document.getElementById('dash-month-profit').textContent = '순이익 ₩'+m.profit.toLocaleString();
+  document.getElementById('dash-month-rate').textContent = '수익률 '+rate(m)+'%';
 
   // 상품 순위
   var pRank = {};
@@ -1937,18 +2112,25 @@ function renderSettlement() {
 }
 
 // ===== 회원등급 =====
+function getGrade(total) {
+  if (total >= 10000000) return {name:'다이아몬드', icon:'💎', color:'#00bcd4'};
+  if (total >= 5000000)  return {name:'골드', icon:'🥇', color:'#c9a84c'};
+  if (total >= 2000000)  return {name:'브론즈', icon:'🥉', color:'#cd7f32'};
+  if (total >= 1000000)  return {name:'실버', icon:'🥈', color:'#888'};
+  return {name:'일반', icon:'🤍', color:'#3a2e1a'};
+}
+
 function renderMemberGrades() {
   var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
   var orders = getOrders();
   var el = document.getElementById('member-grade-list');
   if (!el) return;
   if (users.length === 0) { el.innerHTML = '<p style="color:#9a8a6a;text-align:center;padding:40px;">가입된 회원이 없습니다.</p>'; return; }
-  var html = '<table class="atable"><thead><tr><th>성함</th><th>이메일</th><th>누적 구매액</th><th>등급</th></tr></thead><tbody>';
+  var html = '<table class="atable"><thead><tr><th>성함</th><th>이메일</th><th>생년월일</th><th>누적 구매액</th><th>등급</th></tr></thead><tbody>';
   users.forEach(function(u) {
     var total = orders.filter(function(o){ return o.customerEmail===u.email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
-    var grade = total >= 1000000 ? '👑 Gold VIP' : total >= 300000 ? '🥈 Silver' : '🤍 일반';
-    var gradeColor = total >= 1000000 ? '#c9a84c' : total >= 300000 ? '#888' : '#3a2e1a';
-    html += '<tr><td>'+u.name+'</td><td>'+u.email+'</td><td>₩'+total.toLocaleString()+'</td><td style="color:'+gradeColor+';font-weight:600;">'+grade+'</td></tr>';
+    var g = getGrade(total);
+    html += '<tr><td>'+u.name+'</td><td>'+u.email+'</td><td>'+(u.birthday||'-')+'</td><td>₩'+total.toLocaleString()+'</td><td style="color:'+g.color+';font-weight:600;">'+g.icon+' '+g.name+'</td></tr>';
   });
   html += '</tbody></table>';
   el.innerHTML = html;
@@ -2245,6 +2427,311 @@ function uploadDetailImages() {
   });
 }
 // ===== END CLOUDINARY =====
+
+
+// ===== 자동 쿠폰 & 등급 관리 =====
+function issueUserCoupon(email, code, discountPct, desc, days) {
+  var coupons = getCoupons();
+  var existing = coupons.find(function(c){ return c.code === code && c.assignedTo === email; });
+  if (existing) return; // 이미 발급됨
+  var expiry = new Date();
+  expiry.setDate(expiry.getDate() + (days || 30));
+  coupons.push({
+    code: code,
+    discount: discountPct,
+    type: 'percent',
+    expiry: expiry.toISOString().slice(0,10),
+    used: 0,
+    assignedTo: email,
+    desc: desc,
+    createdAt: new Date().toISOString()
+  });
+  saveCoupons(coupons);
+}
+
+// 마케팅 동의 가입 쿠폰
+function issueMarketingCoupon(email, name) {
+  var code = 'WELCOME10_' + Date.now();
+  issueUserCoupon(email, code, 10, '회원가입 마케팅 동의 10% 쿠폰', 30);
+}
+
+// 등급업 쿠폰
+function checkAndIssueGradeUpCoupon(user) {
+  var orders = getOrders();
+  var total = orders.filter(function(o){ return o.customerEmail===user.email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+  var newGrade = getGrade(total);
+  var prevGrade = user.grade || '일반';
+  if (newGrade.name !== prevGrade) {
+    // 등급 업!
+    var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+    var idx = users.findIndex(function(u){ return u.email === user.email; });
+    if (idx > -1) {
+      users[idx].grade = newGrade.name;
+      users[idx].gradeUpShown = false; // 팝업 미표시 상태로
+      localStorage.setItem('lumiere_users', JSON.stringify(users));
+    }
+    // 등급업 쿠폰 발급
+    var code = newGrade.name.toUpperCase() + '10_' + Date.now();
+    issueUserCoupon(user.email, code, 10, newGrade.icon + ' ' + newGrade.name + ' 등급 달성 10% 쿠폰', 30);
+    return newGrade;
+  }
+  return null;
+}
+
+// 로그인 시 등급업 팝업 체크
+function checkGradeUpPopup(user) {
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var u = users.find(function(x){ return x.email === user.email; });
+  if (!u) return;
+  var orders = getOrders();
+  var total = orders.filter(function(o){ return o.customerEmail===u.email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+  var currentGrade = getGrade(total);
+  var savedGrade = u.grade || '일반';
+  if (currentGrade.name !== savedGrade || (currentGrade.name !== '일반' && !u.gradeUpShown)) {
+    // 팝업 표시
+    showGradeUpPopup(currentGrade, u);
+    // 팝업 표시 완료 처리
+    var idx = users.findIndex(function(x){ return x.email === u.email; });
+    if (idx > -1) { users[idx].grade = currentGrade.name; users[idx].gradeUpShown = true; }
+    localStorage.setItem('lumiere_users', JSON.stringify(users));
+  }
+}
+
+function showGradeUpPopup(grade, user) {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML = '<div style="background:#fff;padding:48px 40px;border-radius:8px;text-align:center;max-width:400px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.2);">' +
+    '<p style="font-size:48px;margin-bottom:16px;">' + grade.icon + '</p>' +
+    '<h3 style="font-size:24px;margin-bottom:12px;color:#1a1510;">' + (user.name||'고객') + '님,<br>' + grade.name + ' 등급이 되셨습니다!</h3>' +
+    '<p style="color:#9a8a6a;font-size:13px;line-height:1.8;margin-bottom:8px;">축하드립니다! 등급 달성 기념<br>10% 할인 쿠폰이 자동 발급되었습니다.</p>' +
+    '<p style="color:#c9a84c;font-size:12px;margin-bottom:28px;">마이페이지 → 쿠폰에서 확인하세요</p>' +
+    '<button onclick="document.body.lastElementChild.remove()" style="width:100%;padding:14px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;letter-spacing:2px;">확인</button>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+// 생일 쿠폰 체크 (로그인 시)
+function checkBirthdayCoupon(user) {
+  if (!user.birthday) return;
+  var parts = user.birthday.split('-');
+  if (parts.length < 3) return;
+  var today = new Date();
+  var thisYear = today.getFullYear();
+  var birthday = new Date(thisYear, parseInt(parts[1])-1, parseInt(parts[2]));
+  var diffDays = Math.ceil((birthday - today) / (1000*60*60*24));
+  if (diffDays >= 0 && diffDays <= 9) {
+    var code = 'BIRTHDAY10_' + thisYear + '_' + user.email.split('@')[0];
+    issueUserCoupon(user.email, code, 10, '🎂 생일 축하 10% 쿠폰', 14);
+  }
+}
+
+// ===== END 자동 쿠폰 =====
+
+
+// ===== 마이페이지 =====
+function openMypage() {
+  document.getElementById('mypage-overlay').style.display = 'block';
+  mypageTab('orders');
+  loadMypageInfo();
+}
+function closeMypage() {
+  document.getElementById('mypage-overlay').style.display = 'none';
+}
+function mypageTab(tab) {
+  document.querySelectorAll('.mptab').forEach(function(p){ p.style.display='none'; });
+  document.querySelectorAll('.mp-menu').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('mptab-'+tab).style.display = 'block';
+  var m = document.getElementById('mpmenu-'+tab); if(m) m.classList.add('active');
+  if (tab==='orders') filterMyOrders('today');
+  if (tab==='coupons') renderMyCoupons();
+  if (tab==='addresses') renderMyAddresses();
+  if (tab==='wishlist') renderMyWishlist();
+  if (tab==='inquiry') renderMyInquiries();
+}
+
+function loadMypageInfo() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return;
+  var el = function(id){ return document.getElementById(id); };
+  if(el('mp-name')) el('mp-name').value = u.name||'';
+  if(el('mp-email')) el('mp-email').value = u.email||'';
+  if(el('mp-phone')) el('mp-phone').value = u.phone||'';
+  if(el('mp-postcode')) el('mp-postcode').value = u.postcode||'';
+  if(el('mp-address')) el('mp-address').value = u.address||'';
+  if(el('mp-address-detail')) el('mp-address-detail').value = u.addressDetail||'';
+  if(el('mp-email-agree')) el('mp-email-agree').checked = u.emailAgree||false;
+  if(el('mp-sms-agree')) el('mp-sms-agree').checked = u.smsAgree||false;
+}
+
+function checkMpPw() {
+  var pw = document.getElementById('mp-pw').value;
+  var pw2 = document.getElementById('mp-pw2').value;
+  var msg = document.getElementById('mp-pw-msg');
+  if (!pw2) { msg.textContent=''; return; }
+  if (pw === pw2) { msg.textContent='✓ 비밀번호가 일치합니다.'; msg.style.color='#4caf50'; }
+  else { msg.textContent='비밀번호가 일치하지 않습니다.'; msg.style.color='#e05555'; }
+}
+
+function saveMyInfo() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return;
+  var pw = document.getElementById('mp-pw').value;
+  var pw2 = document.getElementById('mp-pw2').value;
+  var err = document.getElementById('mp-info-err');
+  if (pw && pw !== pw2) { err.textContent='비밀번호가 일치하지 않습니다.'; return; }
+  var updated = {
+    name: document.getElementById('mp-name').value.trim() || u.name,
+    email: u.email,
+    pw: pw || u.pw,
+    phone: document.getElementById('mp-phone').value.trim() || u.phone,
+    postcode: document.getElementById('mp-postcode').value.trim(),
+    address: document.getElementById('mp-address').value.trim(),
+    addressDetail: document.getElementById('mp-address-detail').value.trim(),
+    emailAgree: document.getElementById('mp-email-agree').checked,
+    smsAgree: document.getElementById('mp-sms-agree').checked,
+    marketing: u.marketing, birthday: u.birthday, grade: u.grade, joinDate: u.joinDate
+  };
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var idx = users.findIndex(function(x){ return x.email === u.email; });
+  if (idx > -1) users[idx] = Object.assign(users[idx], updated);
+  localStorage.setItem('lumiere_users', JSON.stringify(users));
+  localStorage.setItem('lumiere_current', JSON.stringify(Object.assign(u, updated)));
+  updateNavForLogin(updated);
+  err.textContent = '';
+  alert('회원정보가 수정되었습니다.');
+}
+
+function searchMpAddress() {
+  new daum.Postcode({ oncomplete: function(data) {
+    document.getElementById('mp-postcode').value = data.zonecode;
+    document.getElementById('mp-address').value = data.roadAddress||data.jibunAddress;
+    document.getElementById('mp-address-detail').focus();
+  }}).open();
+}
+
+function withdrawMember() {
+  if (!confirm('정말 탈퇴하시겠습니까? 모든 데이터가 삭제됩니다.')) return;
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return;
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  users = users.filter(function(x){ return x.email !== u.email; });
+  localStorage.setItem('lumiere_users', JSON.stringify(users));
+  localStorage.removeItem('lumiere_current');
+  closeMypage();
+  doLogout();
+  alert('탈퇴가 완료되었습니다.');
+}
+
+function filterMyOrders(period) {
+  ['today','week','month','3month'].forEach(function(p){ var el=document.getElementById('mpof-'+p); if(el) el.classList.remove('active'); });
+  var btn = document.getElementById('mpof-'+period); if(btn) btn.classList.add('active');
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return;
+  var orders = getOrders().filter(function(o){ return o.customerEmail===u.email; });
+  var now = new Date();
+  if (period==='today') orders = orders.filter(function(o){ return (o.date||'').slice(0,10)===now.toISOString().slice(0,10); });
+  else if (period==='week') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-7*86400000); });
+  else if (period==='month') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-30*86400000); });
+  else if (period==='3month') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-90*86400000); });
+  var el = document.getElementById('my-order-list');
+  if (!el) return;
+  if (orders.length===0) { el.innerHTML='<p style="color:#aaa;text-align:center;padding:40px;">주문 내역이 없습니다.</p>'; return; }
+  var html='<table class="mp-table"><thead><tr><th>주문일</th><th>상품</th><th>금액</th><th>상태</th><th>운송장</th></tr></thead><tbody>';
+  orders.forEach(function(o){
+    var track = o.tracking ? '<a href="https://www.cjlogistics.com/ko/tool/parcel/tracking?gnbInvcNo='+o.tracking+'" target="_blank" style="color:#c9a84c;font-size:11px;">조회</a>' : '-';
+    html+='<tr><td>'+(o.date||'').slice(0,10)+'</td><td>'+o.productName+'</td><td>₩'+(o.amount||0).toLocaleString()+'</td><td>'+o.status+'</td><td>'+track+'</td></tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function renderMyCoupons() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return;
+  var coupons = getCoupons().filter(function(c){ return !c.assignedTo || c.assignedTo===u.email; });
+  var available = coupons.filter(function(c){ return !c.expiry || new Date(c.expiry) >= new Date(); });
+  var countEl = document.getElementById('my-coupon-count');
+  if(countEl) countEl.textContent = '사용 가능 쿠폰 : ' + available.length;
+  var el = document.getElementById('my-coupon-list');
+  if (!el) return;
+  if (coupons.length===0) { el.innerHTML='<p style="color:#aaa;text-align:center;padding:40px;">보유한 쿠폰이 없습니다.</p>'; return; }
+  var html='';
+  coupons.forEach(function(c){
+    var expired = c.expiry && new Date(c.expiry) < new Date();
+    var disc = c.type==='percent' ? c.discount+'% 할인' : '₩'+c.discount.toLocaleString()+' 할인';
+    html+='<div style="border-bottom:1px solid #f5f5f5;padding:16px 0;opacity:'+(expired?'0.4':'1')+';"><p style="font-weight:600;color:#1a1510;margin-bottom:4px;">'+(c.desc||c.code)+'</p>';
+    if(c.expiry) html+='<p style="font-size:11px;color:#aaa;margin-bottom:2px;">'+(c.createdAt||'').slice(0,10)+' ~ '+c.expiry+'</p>';
+    html+='<p style="font-size:12px;color:#666;">구매금액제한없음 &nbsp; 결제수단제한없음</p>';
+    html+='<p style="font-size:13px;color:#c9a84c;margin-top:4px;">쿠폰혜택 '+disc+(expired?' (만료)':'')+'</p></div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderMyWishlist() {
+  var el = document.getElementById('my-wishlist');
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  var wishlist = u ? JSON.parse(localStorage.getItem('lumiere_wish_'+u.email) || '[]') : [];
+  if (!el) return;
+  if (wishlist.length===0) { el.innerHTML='<p style="color:#aaa;text-align:center;padding:40px;">관심상품 내역이 없습니다.</p>'; return; }
+  el.innerHTML=wishlist.map(function(p){ return '<div style="padding:12px 0;border-bottom:1px solid #f5f5f5;display:flex;justify-content:space-between;"><span>'+p.name+'</span><span style="color:#c9a84c;">₩'+p.price.toLocaleString()+'</span></div>'; }).join('');
+}
+
+function renderMyAddresses() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  var addresses = u ? JSON.parse(localStorage.getItem('lumiere_addr_'+u.email) || '[]') : [];
+  var el = document.getElementById('my-address-list');
+  if (!el) return;
+  if (addresses.length===0) { el.innerHTML='<p style="color:#aaa;">저장된 주소가 없습니다.</p>'; return; }
+  el.innerHTML=addresses.map(function(a,i){ return '<div style="border:1px solid #eee;padding:16px;border-radius:4px;margin-bottom:12px;"><p style="font-weight:600;margin-bottom:4px;">'+(a.label||'배송지')+(a.isDefault?' <span style="font-size:11px;color:#c9a84c;">[기본]</span>':'')+'</p><p style="font-size:13px;color:#666;">'+a.name+' | '+a.postcode+' '+a.address+' '+a.addressDetail+'</p></div>'; }).join('');
+}
+
+function openAddressForm() { document.getElementById('address-form').style.display='block'; }
+function searchAfAddress() {
+  new daum.Postcode({ oncomplete: function(data) {
+    document.getElementById('af-postcode').value = data.zonecode;
+    document.getElementById('af-address').value = data.roadAddress||data.jibunAddress;
+    document.getElementById('af-address-detail').focus();
+  }}).open();
+}
+function saveAddress() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null'); if(!u) return;
+  var addresses = JSON.parse(localStorage.getItem('lumiere_addr_'+u.email) || '[]');
+  var isDefault = document.getElementById('af-default').checked;
+  if (isDefault) addresses.forEach(function(a){ a.isDefault=false; });
+  addresses.push({ label:document.getElementById('af-label').value, name:document.getElementById('af-name').value, postcode:document.getElementById('af-postcode').value, address:document.getElementById('af-address').value, addressDetail:document.getElementById('af-address-detail').value, phone:document.getElementById('af-phone').value, isDefault:isDefault });
+  localStorage.setItem('lumiere_addr_'+u.email, JSON.stringify(addresses));
+  document.getElementById('address-form').style.display='none';
+  renderMyAddresses();
+}
+
+function renderMyInquiries() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  var inquiries = u ? JSON.parse(localStorage.getItem('lumiere_inq_'+u.email) || '[]') : [];
+  var el = document.getElementById('my-inquiry-list');
+  if (!el) return;
+  if (inquiries.length===0) { el.innerHTML='<tr><td colspan="3" style="text-align:center;color:#aaa;padding:40px;">No articles.</td></tr>'; return; }
+  el.innerHTML=inquiries.map(function(i){ return '<tr><td>'+(i.date||'').slice(0,10)+'</td><td>'+i.title+'</td><td>'+(i.replied?'<span style="color:#4caf50;">답변완료</span>':'대기중')+'</td></tr>'; }).join('');
+}
+function openInquiryForm() { document.getElementById('inquiry-form').style.display='block'; }
+function submitInquiry() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null'); if(!u) return;
+  var title = document.getElementById('inq-title').value.trim();
+  var content = document.getElementById('inq-content').value.trim();
+  if (!title||!content) { alert('제목과 내용을 입력해주세요.'); return; }
+  var inquiries = JSON.parse(localStorage.getItem('lumiere_inq_'+u.email) || '[]');
+  inquiries.push({ title, content, date:new Date().toISOString(), replied:false, customerName:u.name, customerEmail:u.email });
+  localStorage.setItem('lumiere_inq_'+u.email, JSON.stringify(inquiries));
+  // 어드민 전체 문의에도 저장
+  var allInq = JSON.parse(localStorage.getItem('lumiere_inquiries') || '[]');
+  allInq.push({ title, content, date:new Date().toISOString(), replied:false, customerName:u.name, customerEmail:u.email });
+  localStorage.setItem('lumiere_inquiries', JSON.stringify(allInq));
+  document.getElementById('inquiry-form').style.display='none';
+  document.getElementById('inq-title').value='';
+  document.getElementById('inq-content').value='';
+  renderMyInquiries();
+  alert('문의가 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.');
+}
+// ===== END 마이페이지 =====
 
 // ===== END ADMIN =====
 
