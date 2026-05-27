@@ -1233,7 +1233,7 @@ function renderProducts() {
     var margin = p.price - p.cost;
     var stockColor = p.stock === 0 ? '#e05555' : p.stock <= 10 ? '#e0a030' : '#c8bfa8';
     html += '<tr><td>' + p.name + '</td><td>' + p.category + '</td><td>₩' + p.price.toLocaleString() + '</td><td>₩' + p.cost.toLocaleString() + '</td><td style="color:#c9a84c;">₩' + margin.toLocaleString() + '</td><td style="color:' + stockColor + ';">' + p.stock + '</td>';
-    html += '<td><button onclick="openProductForm('' + p.id + '')" class="abtn-outline" style="margin-right:4px;">수정</button><button onclick="deleteProduct('' + p.id + '')" class="abtn-outline" style="color:#e05555;border-color:#e05555;">삭제</button></td></tr>';
+    html += '<td><button onclick="openProductForm(\"' + p.id + '\")" class="abtn-outline" style="margin-right:4px;">수정</button><button onclick="deleteProduct(\"' + p.id + '\")" class="abtn-outline" style="color:#e05555;border-color:#e05555;">삭제</button></td></tr>';
   });
   html += '</tbody></table>';
   el.innerHTML = html;
