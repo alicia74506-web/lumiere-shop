@@ -1004,31 +1004,89 @@ window.addEventListener('DOMContentLoaded', function(){
 </div>
 
 <!-- 상품 등록 모달 -->
-<div id="product-form-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:5000;display:none;align-items:center;justify-content:center;">
-  <div style="background:#fff;border:1px solid #d4c4a0;padding:32px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;border-radius:4px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-      <h3 id="product-form-title" style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:20px;">상품 등록</h3>
-      <button onclick="closeProductForm()" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;">×</button>
+<div id="product-form-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
+  <div style="background:#faf8f4;border:1px solid #e0d4b8;width:680px;max-width:95vw;max-height:92vh;overflow-y:auto;border-radius:6px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+    
+    <!-- 헤더 -->
+    <div style="background:#fff;padding:24px 32px;border-bottom:1px solid #e8dcc8;display:flex;justify-content:space-between;align-items:center;border-radius:6px 6px 0 0;">
+      <div>
+        <h3 id="product-form-title" style="color:#1a1510;font-family:'Playfair Display','Cormorant Garamond',serif;font-size:22px;font-style:italic;margin:0;">상품 등록</h3>
+        <p style="color:#9a8a6a;font-size:11px;letter-spacing:2px;margin:4px 0 0;">PRODUCT REGISTRATION</p>
+      </div>
+      <button onclick="closeProductForm()" style="background:none;border:none;color:#aaa;font-size:24px;cursor:pointer;line-height:1;">×</button>
     </div>
-    <div style="display:grid;gap:14px;">
-      <input id="pf-name" placeholder="상품명 *" class="ainput">
-      <select id="pf-cat" class="ainput">
-        <option value="">카테고리 선택 *</option>
-        <option>자동차 방향제</option>
-        <option>디퓨저</option>
-        <option>향수</option>
-        <option>룸스프레이</option>
-        <option>소취제</option>
-      </select>
-      <input id="pf-price" placeholder="판매가 (원) *" type="number" class="ainput" oninput="updateMargin()">
-      <input id="pf-cost" placeholder="원가 (원) *" type="number" class="ainput" oninput="updateMargin()">
-      <input id="pf-stock" placeholder="재고 수량 *" type="number" class="ainput">
-      <input id="pf-imgurl" placeholder="이미지 파일명 (예: s3_car.jpg)" class="ainput">
-      <input id="pf-status" placeholder="상태 (예: New, Best, Coming Soon)" class="ainput">
-      <input id="pf-desc" placeholder="상품 설명" class="ainput">
-      <p id="pf-margin" style="color:#c9a84c;font-size:13px;"></p>
-      <div id="pf-error" style="color:#e05555;font-size:12px;"></div>
-      <button onclick="saveProduct()" class="abtn-gold" style="width:100%;padding:14px;">저장</button>
+
+    <div style="padding:28px 32px;display:grid;gap:0;">
+
+      <!-- 구역 1: 기본 정보 -->
+      <div style="border:1px solid #e8dcc8;border-radius:6px;padding:24px;margin-bottom:16px;background:#fff;">
+        <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">기본 정보</p>
+        <div style="display:grid;gap:12px;">
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">상품명 *</label>
+            <input id="pf-name" placeholder="예: Lumière Vent Clip" class="ainput" style="background:#faf8f4;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 *</label>
+              <select id="pf-cat" class="ainput" style="background:#faf8f4;">
+                <option value="">선택</option>
+                <option>자동차 방향제</option>
+                <option>디퓨저</option>
+                <option>향수</option>
+                <option>룸스프레이</option>
+                <option>소취제</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">상태 배지</label>
+              <input id="pf-status" placeholder="예: New / Best / Coming Soon" class="ainput" style="background:#faf8f4;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">상품 설명</label>
+            <input id="pf-desc" placeholder="상품 한 줄 설명" class="ainput" style="background:#faf8f4;">
+          </div>
+        </div>
+      </div>
+
+      <!-- 구역 2: 가격 / 재고 -->
+      <div style="border:1px solid #e8dcc8;border-radius:6px;padding:24px;margin-bottom:16px;background:#fff;">
+        <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">가격 & 재고</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">판매가 (원) *</label>
+            <input id="pf-price" placeholder="0" type="number" class="ainput" style="background:#faf8f4;" oninput="updateMargin()">
+          </div>
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">원가 (원) *</label>
+            <input id="pf-cost" placeholder="0" type="number" class="ainput" style="background:#faf8f4;" oninput="updateMargin()">
+          </div>
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">재고 수량 *</label>
+            <input id="pf-stock" placeholder="0" type="number" class="ainput" style="background:#faf8f4;">
+          </div>
+        </div>
+        <div id="pf-margin" style="background:#faf6f0;border:1px solid #e8dcc8;border-radius:4px;padding:10px 14px;font-size:13px;color:#c9a84c;display:none;"></div>
+      </div>
+
+      <!-- 구역 3: 이미지 -->
+      <div style="border:1px solid #e8dcc8;border-radius:6px;padding:24px;margin-bottom:20px;background:#fff;">
+        <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">상품 이미지</p>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;">
+          <div>
+            <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">이미지 파일명</label>
+            <input id="pf-imgurl" placeholder="예: s3_car.jpg (GitHub repo에 업로드된 파일명)" class="ainput" style="background:#faf8f4;" oninput="previewProductImg()">
+            <p style="font-size:10px;color:#aaa;margin-top:5px;">GitHub repo에 이미지 파일을 올린 후 파일명을 입력하세요</p>
+          </div>
+          <div id="pf-img-preview" style="width:80px;height:80px;border:1px solid #e8dcc8;border-radius:4px;overflow:hidden;background:#f5f0e8;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:10px;color:#bbb;text-align:center;">미리보기</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="pf-error" style="color:#e05555;font-size:12px;margin-bottom:12px;"></div>
+      <button onclick="saveProduct()" class="abtn-gold" style="width:100%;padding:15px;font-size:13px;letter-spacing:2px;border-radius:4px;">저장하기</button>
     </div>
   </div>
 </div>
@@ -1322,10 +1380,30 @@ function closeProductForm() { document.getElementById('product-form-overlay').st
 function updateMargin() {
   var price = parseInt(document.getElementById('pf-price').value) || 0;
   var cost = parseInt(document.getElementById('pf-cost').value) || 0;
+  var el = document.getElementById('pf-margin');
   if (price && cost) {
     var margin = price - cost;
     var rate = Math.round((margin/price)*100);
-    document.getElementById('pf-margin').textContent = '순수익: ₩' + margin.toLocaleString() + ' (' + rate + '%)';
+    el.textContent = '순수익: ₩' + margin.toLocaleString() + ' (' + rate + '%) — 마진율 ' + rate + '%';
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function previewProductImg() {
+  var val = document.getElementById('pf-imgurl').value.trim();
+  var preview = document.getElementById('pf-img-preview');
+  if (!preview) return;
+  if (val) {
+    var img = document.createElement('img');
+    img.src = val;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+    img.onerror = function(){ preview.innerHTML = '<span style="font-size:10px;color:#bbb;padding:4px;text-align:center;">파일 없음</span>'; };
+    preview.innerHTML = '';
+    preview.appendChild(img);
+  } else {
+    preview.innerHTML = '<span style="font-size:10px;color:#bbb;text-align:center;">미리보기</span>';
   }
 }
 function saveProduct() {
