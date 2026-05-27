@@ -865,11 +865,11 @@ window.addEventListener('DOMContentLoaded', function(){
 
 <!-- ===== ADMIN PANEL ===== -->
 <div id="admin-overlay" onclick="closeAdmin()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:4000;"></div>
-<div id="admin-panel" style="display:none;position:fixed;inset:0;background:#0f0e0c;z-index:4001;overflow-y:auto;font-family:'DM Sans',sans-serif;">
+<div id="admin-panel" style="display:none;position:fixed;inset:0;background:#f8f4ee;z-index:4001;overflow-y:auto;font-family:'DM Sans',sans-serif;">
   
   <!-- 어드민 헤더 -->
-  <div style="background:#1a1510;border-bottom:1px solid #3a2e16;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:#c9a84c;">Lumière Admin</div>
+  <div style="background:#efe8da;border-bottom:1px solid #d4c4a0;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:#1a1510;">Lumière Admin</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button onclick="adminTab('dashboard')" class="atab active" id="atab-dashboard">📊 대시보드</button>
       <button onclick="adminTab('products')" class="atab" id="atab-products">🛍 상품관리</button>
@@ -878,15 +878,15 @@ window.addEventListener('DOMContentLoaded', function(){
       <button onclick="adminTab('reviews')" class="atab" id="atab-reviews">💬 리뷰</button>
       <button onclick="adminTab('marketing')" class="atab" id="atab-marketing">📤 마케팅</button>
     </div>
-    <button onclick="closeAdmin()" style="background:none;border:1px solid #3a2e16;color:#aaa;padding:8px 16px;cursor:pointer;font-size:12px;border-radius:4px;">닫기</button>
+    <button onclick="closeAdmin()" style="background:none;border:1px solid #c9a84c;color:#8a6a2a;padding:8px 16px;cursor:pointer;font-size:12px;border-radius:4px;">닫기</button>
   </div>
 
-  <div style="padding:32px;max-width:1200px;margin:0 auto;">
+  <div style="padding:40px 48px;max-width:1400px;margin:0 auto;">
 
     <!-- 대시보드 탭 -->
     <div id="admin-dashboard" class="apanel">
-      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">매출 현황</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+      <h2 style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:8px;letter-spacing:2px;">매출 현황</h2><p style="color:#9a8a6a;font-size:11px;letter-spacing:3px;margin-bottom:32px;">SALES DASHBOARD</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px;">
         <div class="acard"><p class="acard-label">오늘 매출</p><p class="acard-val" id="dash-today">₩0</p><p class="acard-sub" id="dash-today-profit">순수익 ₩0</p></div>
         <div class="acard"><p class="acard-label">이번 주 매출</p><p class="acard-val" id="dash-week">₩0</p><p class="acard-sub" id="dash-week-profit">순수익 ₩0</p></div>
         <div class="acard"><p class="acard-label">이번 달 매출</p><p class="acard-val" id="dash-month">₩0</p><p class="acard-sub" id="dash-month-profit">순수익 ₩0</p></div>
@@ -901,7 +901,19 @@ window.addEventListener('DOMContentLoaded', function(){
           <div id="rank-customers"></div>
         </div>
       </div>
-      <div style="margin-top:24px;text-align:right;">
+      <!-- 매출 차트 -->
+      <div class="abox" style="margin-top:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3 class="abox-title" style="margin-bottom:0;border:none;padding:0;">매출 추이</h3>
+          <div style="display:flex;gap:8px;">
+            <button onclick="switchChart('daily')" class="abtn-outline active-filter" id="chart-daily">일별</button>
+            <button onclick="switchChart('weekly')" class="abtn-outline" id="chart-weekly">주별</button>
+            <button onclick="switchChart('monthly')" class="abtn-outline" id="chart-monthly">월별</button>
+          </div>
+        </div>
+        <canvas id="salesChart" style="width:100%;height:280px;"></canvas>
+      </div>
+      <div style="margin-top:16px;text-align:right;">
         <button onclick="exportExcel('orders')" class="abtn-gold">📥 매출 엑셀 다운로드</button>
       </div>
     </div>
@@ -920,7 +932,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     <!-- 주문/재고 탭 -->
     <div id="admin-orders" class="apanel" style="display:none;">
-      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">주문 & 재고 관리</h2>
+      <h2 style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:24px;">주문 & 재고 관리</h2>
       <div id="order-list"></div>
       <div style="margin-top:16px;text-align:right;">
         <button onclick="exportExcel('orders')" class="abtn-outline">📥 주문 엑셀 다운로드</button>
@@ -929,7 +941,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     <!-- 고객DB 탭 -->
     <div id="admin-customers" class="apanel" style="display:none;">
-      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:16px;">고객 DB</h2>
+      <h2 style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:16px;">고객 DB</h2>
       <div style="display:flex;gap:8px;margin-bottom:20px;">
         <button onclick="filterCustomers('all')" class="abtn-outline active-filter" id="cf-all">전체</button>
         <button onclick="filterCustomers('marketing')" class="abtn-outline" id="cf-marketing">마케팅 동의</button>
@@ -943,13 +955,13 @@ window.addEventListener('DOMContentLoaded', function(){
 
     <!-- 리뷰 탭 -->
     <div id="admin-reviews" class="apanel" style="display:none;">
-      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">리뷰 관리</h2>
+      <h2 style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:24px;">리뷰 관리</h2>
       <div id="review-list"></div>
     </div>
 
     <!-- 마케팅 탭 -->
     <div id="admin-marketing" class="apanel" style="display:none;">
-      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">마케팅 메시지 발송</h2>
+      <h2 style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:24px;">마케팅 메시지 발송</h2>
       <div class="abox" style="margin-bottom:24px;">
         <p style="color:#888;font-size:13px;margin-bottom:16px;">마케팅 동의 고객: <strong id="marketing-count" style="color:#c9a84c;">0명</strong></p>
         <textarea id="kakao-msg" placeholder="카카오톡 광고 문자 내용을 입력하세요..." style="width:100%;height:120px;background:#1a1510;border:1px solid #3a2e16;color:#e0d4b8;padding:12px;font-size:13px;resize:vertical;border-radius:4px;"></textarea>
@@ -963,9 +975,9 @@ window.addEventListener('DOMContentLoaded', function(){
 
 <!-- 상품 등록 모달 -->
 <div id="product-form-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:5000;display:none;align-items:center;justify-content:center;">
-  <div style="background:#1a1510;border:1px solid #3a2e16;padding:32px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;border-radius:4px;">
+  <div style="background:#fff;border:1px solid #d4c4a0;padding:32px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;border-radius:4px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-      <h3 id="product-form-title" style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:20px;">상품 등록</h3>
+      <h3 id="product-form-title" style="color:#1a1510;font-family:'Cormorant Garamond',serif;font-size:20px;">상품 등록</h3>
       <button onclick="closeProductForm()" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;">×</button>
     </div>
     <div style="display:grid;gap:14px;">
@@ -1362,6 +1374,8 @@ function renderDashboard() {
   var cSorted = Object.entries(cRank).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5);
   var cEl = document.getElementById('rank-customers');
   if (cEl) cEl.innerHTML = cSorted.length ? cSorted.map(function(c,i){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1510;color:#c8bfa8;font-size:13px;"><span>'+(i+1)+'. '+c[0]+'</span><span style="color:#c9a84c;">₩'+c[1].toLocaleString()+'</span></div>'; }).join('') : '<p style="color:#555;font-size:13px;">주문 데이터 없음</p>';
+  // render chart
+  setTimeout(function(){ renderSalesChart(currentChartMode); }, 100);
 }
 
 // --- 엑셀 내보내기 ---
@@ -1391,6 +1405,142 @@ function exportExcel(type) {
   var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
 }
+
+// ===== SALES CHART =====
+var salesChartInstance = null;
+var currentChartMode = 'daily';
+
+function switchChart(mode) {
+  currentChartMode = mode;
+  ['daily','weekly','monthly'].forEach(function(m){
+    var el = document.getElementById('chart-'+m);
+    if (el) el.classList.remove('active-filter');
+  });
+  var activeEl = document.getElementById('chart-'+mode);
+  if (activeEl) activeEl.classList.add('active-filter');
+  renderSalesChart(mode);
+}
+
+function renderSalesChart(mode) {
+  var orders = getOrders();
+  var labels = [], data = [], profitData = [];
+
+  if (mode === 'daily') {
+    // 최근 14일
+    var days = {};
+    for (var i = 13; i >= 0; i--) {
+      var d = new Date(); d.setDate(d.getDate() - i);
+      var key = d.toISOString().slice(0,10);
+      days[key] = {rev:0, profit:0};
+    }
+    orders.forEach(function(o){
+      var k = (o.date||'').slice(0,10);
+      if (days[k]) { days[k].rev += (o.amount||0); days[k].profit += (o.profit||0); }
+    });
+    Object.keys(days).forEach(function(k){
+      labels.push(k.slice(5)); // MM-DD
+      data.push(days[k].rev);
+      profitData.push(days[k].profit);
+    });
+  } else if (mode === 'weekly') {
+    // 최근 8주
+    var weeks = {};
+    for (var i = 7; i >= 0; i--) {
+      var d = new Date(); d.setDate(d.getDate() - i*7);
+      var yr = d.getFullYear(), wk = getWeekNum(d);
+      var key = yr + '-W' + String(wk).padStart(2,'0');
+      weeks[key] = {rev:0, profit:0};
+    }
+    orders.forEach(function(o){
+      if (!o.date) return;
+      var d = new Date(o.date);
+      var key = d.getFullYear() + '-W' + String(getWeekNum(d)).padStart(2,'0');
+      if (weeks[key]) { weeks[key].rev += (o.amount||0); weeks[key].profit += (o.profit||0); }
+    });
+    Object.keys(weeks).forEach(function(k){
+      labels.push(k);
+      data.push(weeks[k].rev);
+      profitData.push(weeks[k].profit);
+    });
+  } else if (mode === 'monthly') {
+    // 최근 6개월
+    var months = {};
+    for (var i = 5; i >= 0; i--) {
+      var d = new Date(); d.setMonth(d.getMonth() - i);
+      var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      months[key] = {rev:0, profit:0};
+    }
+    orders.forEach(function(o){
+      var k = (o.date||'').slice(0,7);
+      if (months[k]) { months[k].rev += (o.amount||0); months[k].profit += (o.profit||0); }
+    });
+    Object.keys(months).forEach(function(k){
+      labels.push(k.slice(5)+'월');
+      data.push(months[k].rev);
+      profitData.push(months[k].profit);
+    });
+  }
+
+  var ctx = document.getElementById('salesChart');
+  if (!ctx) return;
+  if (salesChartInstance) salesChartInstance.destroy();
+  salesChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '매출',
+          data: data,
+          backgroundColor: 'rgba(201,168,76,0.3)',
+          borderColor: '#c9a84c',
+          borderWidth: 2,
+          borderRadius: 4
+        },
+        {
+          label: '순수익',
+          data: profitData,
+          backgroundColor: 'rgba(120,160,100,0.3)',
+          borderColor: '#78a064',
+          borderWidth: 2,
+          borderRadius: 4,
+          type: 'line',
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#78a064'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#5a4a2a', font: { size: 12 } } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              return ctx.dataset.label + ': ₩' + (ctx.parsed.y||0).toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#9a8a6a', font:{size:11} }, grid: { color: '#f0e8d8' } },
+        y: { ticks: { color: '#9a8a6a', font:{size:11}, callback: function(v){ return '₩'+v.toLocaleString(); } }, grid: { color: '#f0e8d8' } }
+      }
+    }
+  });
+}
+
+function getWeekNum(d) {
+  var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  var dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  var yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  return Math.ceil((((date - yearStart) / 86400000) + 1)/7);
+}
+// ===== END SALES CHART =====
+
 // ===== END ADMIN =====
 
 </script>
