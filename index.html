@@ -308,8 +308,21 @@ function doJoin() {
 function updateNavForLogin(user) {
   var loginBtn = document.getElementById('nav-login');
   var joinBtn = document.getElementById('nav-join');
-  if (loginBtn) loginBtn.textContent = user.name;
+  var logoutBtn = document.getElementById('nav-logout');
+  if (loginBtn) { loginBtn.textContent = user.name; loginBtn.onclick = null; }
   if (joinBtn) joinBtn.style.display = 'none';
+  if (logoutBtn) logoutBtn.style.display = 'inline-block';
+}
+
+function doLogout() {
+  localStorage.removeItem('lumiere_current');
+  var loginBtn = document.getElementById('nav-login');
+  var joinBtn = document.getElementById('nav-join');
+  var logoutBtn = document.getElementById('nav-logout');
+  if (loginBtn) { loginBtn.textContent = 'Login'; loginBtn.onclick = function(){ openModal('login-modal'); }; }
+  if (joinBtn) joinBtn.style.display = 'inline-block';
+  if (logoutBtn) logoutBtn.style.display = 'none';
+  alert('로그아웃 되었습니다.');
 }
 
 // 페이지 로드 시 로그인 상태 복원
@@ -345,6 +358,7 @@ window.addEventListener('DOMContentLoaded', function(){
       <span id="cart-count" style="position:absolute;top:-4px;right:-2px;background:var(--gold);color:#1a1a1a;border-radius:50%;width:16px;height:16px;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700;font-family:'Montserrat',sans-serif;">0</span>
     </button>
     <button id="nav-login" onclick="openModal('login-modal')" style="font-size:11px;letter-spacing:2px;color:var(--white);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Login</button>
+    <button id="nav-logout" onclick="doLogout()" style="display:none;font-size:11px;letter-spacing:2px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Logout</button>
     <button id="nav-join" onclick="openModal('join-modal')" style="font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:8px 20px;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Join</button>
     <a href="#contact" class="nav-btn">문의하기</a>
   </div>
