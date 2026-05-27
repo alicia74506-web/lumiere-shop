@@ -1380,15 +1380,13 @@ function exportExcel(type) {
     headers = ['성함','이메일','연락처','가입일','마케팅동의'];
     filename = '뤼미에르_고객DB.csv';
   }
-  var csv = '﻿' + headers.join(',') + '
-';
+  var csv = '\uFEFF' + headers.join(',') + '\n';
   data.forEach(function(row) {
     var line = [];
     if (type === 'orders') line = [(row.date||'').slice(0,10), row.customerName||'', row.customerEmail||'', row.productName||'', row.qty||1, row.amount||0, row.profit||0, row.status||''];
     if (type === 'products') line = [row.name, row.category, row.price, row.cost, (row.price-row.cost), row.stock];
     if (type === 'customers') line = [row.name, row.email, row.phone||'', (row.joinDate||'').slice(0,10), row.marketing?'동의':'미동의'];
-    csv += line.map(function(v){ return '"'+String(v)+'"'; }).join(',') + '
-';
+    csv += line.map(function(v){ return '"'+String(v)+'"'; }).join(',') + '\n';
   });
   var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
