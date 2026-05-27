@@ -309,9 +309,11 @@ function updateNavForLogin(user) {
   var loginBtn = document.getElementById('nav-login');
   var joinBtn = document.getElementById('nav-join');
   var logoutBtn = document.getElementById('nav-logout');
+  var adminBtn = document.getElementById('nav-admin');
   if (loginBtn) { loginBtn.textContent = user.name; loginBtn.onclick = null; }
   if (joinBtn) joinBtn.style.display = 'none';
   if (logoutBtn) logoutBtn.style.display = 'inline-block';
+  if (adminBtn && user.email === 'alicia@kwellroutine.com') adminBtn.style.display = 'inline-block';
 }
 
 function doLogout() {
@@ -322,6 +324,8 @@ function doLogout() {
   if (loginBtn) { loginBtn.textContent = 'Login'; loginBtn.onclick = function(){ openModal('login-modal'); }; }
   if (joinBtn) joinBtn.style.display = 'inline-block';
   if (logoutBtn) logoutBtn.style.display = 'none';
+  var adminBtn2 = document.getElementById('nav-admin');
+  if (adminBtn2) adminBtn2.style.display = 'none';
   alert('로그아웃 되었습니다.');
 }
 
@@ -358,6 +362,7 @@ window.addEventListener('DOMContentLoaded', function(){
       <span id="cart-count" style="position:absolute;top:-4px;right:-2px;background:var(--gold);color:#1a1a1a;border-radius:50%;width:16px;height:16px;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700;font-family:'Montserrat',sans-serif;">0</span>
     </button>
     <button id="nav-login" onclick="openModal('login-modal')" style="font-size:11px;letter-spacing:2px;color:var(--white);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Login</button>
+    <button id="nav-admin" onclick="openAdmin()" style="display:none;font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:8px 16px;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;margin-right:4px;">Admin</button>
     <button id="nav-logout" onclick="doLogout()" style="display:none;font-size:11px;letter-spacing:2px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Logout</button>
     <button id="nav-join" onclick="openModal('join-modal')" style="font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:8px 20px;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Join</button>
     <a href="#contact" class="nav-btn">문의하기</a>
@@ -857,6 +862,133 @@ window.addEventListener('DOMContentLoaded', function(){
   </div>
 </div>
 
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="admin-overlay" onclick="closeAdmin()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:4000;"></div>
+<div id="admin-panel" style="display:none;position:fixed;inset:0;background:#0f0e0c;z-index:4001;overflow-y:auto;font-family:'DM Sans',sans-serif;">
+  
+  <!-- 어드민 헤더 -->
+  <div style="background:#1a1510;border-bottom:1px solid #3a2e16;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:#c9a84c;">Lumière Admin</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="adminTab('dashboard')" class="atab active" id="atab-dashboard">📊 대시보드</button>
+      <button onclick="adminTab('products')" class="atab" id="atab-products">🛍 상품관리</button>
+      <button onclick="adminTab('orders')" class="atab" id="atab-orders">📦 주문/재고</button>
+      <button onclick="adminTab('customers')" class="atab" id="atab-customers">👥 고객DB</button>
+      <button onclick="adminTab('reviews')" class="atab" id="atab-reviews">💬 리뷰</button>
+      <button onclick="adminTab('marketing')" class="atab" id="atab-marketing">📤 마케팅</button>
+    </div>
+    <button onclick="closeAdmin()" style="background:none;border:1px solid #3a2e16;color:#aaa;padding:8px 16px;cursor:pointer;font-size:12px;border-radius:4px;">닫기</button>
+  </div>
+
+  <div style="padding:32px;max-width:1200px;margin:0 auto;">
+
+    <!-- 대시보드 탭 -->
+    <div id="admin-dashboard" class="apanel">
+      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">매출 현황</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+        <div class="acard"><p class="acard-label">오늘 매출</p><p class="acard-val" id="dash-today">₩0</p><p class="acard-sub" id="dash-today-profit">순수익 ₩0</p></div>
+        <div class="acard"><p class="acard-label">이번 주 매출</p><p class="acard-val" id="dash-week">₩0</p><p class="acard-sub" id="dash-week-profit">순수익 ₩0</p></div>
+        <div class="acard"><p class="acard-label">이번 달 매출</p><p class="acard-val" id="dash-month">₩0</p><p class="acard-sub" id="dash-month-profit">순수익 ₩0</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div class="abox">
+          <h3 class="abox-title">🏆 인기 상품 순위</h3>
+          <div id="rank-products"></div>
+        </div>
+        <div class="abox">
+          <h3 class="abox-title">👑 고객 구매 순위</h3>
+          <div id="rank-customers"></div>
+        </div>
+      </div>
+      <div style="margin-top:24px;text-align:right;">
+        <button onclick="exportExcel('orders')" class="abtn-gold">📥 매출 엑셀 다운로드</button>
+      </div>
+    </div>
+
+    <!-- 상품관리 탭 -->
+    <div id="admin-products" class="apanel" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+        <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;">상품 관리</h2>
+        <button onclick="openProductForm()" class="abtn-gold">+ 상품 등록</button>
+      </div>
+      <div id="product-list"></div>
+      <div style="margin-top:16px;text-align:right;">
+        <button onclick="exportExcel('products')" class="abtn-outline">📥 상품 엑셀 다운로드</button>
+      </div>
+    </div>
+
+    <!-- 주문/재고 탭 -->
+    <div id="admin-orders" class="apanel" style="display:none;">
+      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">주문 & 재고 관리</h2>
+      <div id="order-list"></div>
+      <div style="margin-top:16px;text-align:right;">
+        <button onclick="exportExcel('orders')" class="abtn-outline">📥 주문 엑셀 다운로드</button>
+      </div>
+    </div>
+
+    <!-- 고객DB 탭 -->
+    <div id="admin-customers" class="apanel" style="display:none;">
+      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:16px;">고객 DB</h2>
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button onclick="filterCustomers('all')" class="abtn-outline active-filter" id="cf-all">전체</button>
+        <button onclick="filterCustomers('marketing')" class="abtn-outline" id="cf-marketing">마케팅 동의</button>
+        <button onclick="filterCustomers('no-marketing')" class="abtn-outline" id="cf-no">미동의</button>
+      </div>
+      <div id="customer-list"></div>
+      <div style="margin-top:16px;text-align:right;">
+        <button onclick="exportExcel('customers')" class="abtn-outline">📥 고객 엑셀 다운로드</button>
+      </div>
+    </div>
+
+    <!-- 리뷰 탭 -->
+    <div id="admin-reviews" class="apanel" style="display:none;">
+      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">리뷰 관리</h2>
+      <div id="review-list"></div>
+    </div>
+
+    <!-- 마케팅 탭 -->
+    <div id="admin-marketing" class="apanel" style="display:none;">
+      <h2 style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:24px;">마케팅 메시지 발송</h2>
+      <div class="abox" style="margin-bottom:24px;">
+        <p style="color:#888;font-size:13px;margin-bottom:16px;">마케팅 동의 고객: <strong id="marketing-count" style="color:#c9a84c;">0명</strong></p>
+        <textarea id="kakao-msg" placeholder="카카오톡 광고 문자 내용을 입력하세요..." style="width:100%;height:120px;background:#1a1510;border:1px solid #3a2e16;color:#e0d4b8;padding:12px;font-size:13px;resize:vertical;border-radius:4px;"></textarea>
+        <button onclick="sendKakao()" class="abtn-gold" style="margin-top:12px;">카카오톡 발송 (준비중)</button>
+      </div>
+      <p style="color:#555;font-size:12px;">※ 카카오 비즈메시지 API 연동 후 실제 발송 가능합니다.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 상품 등록 모달 -->
+<div id="product-form-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:5000;display:none;align-items:center;justify-content:center;">
+  <div style="background:#1a1510;border:1px solid #3a2e16;padding:32px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;border-radius:4px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h3 id="product-form-title" style="color:#c9a84c;font-family:'Cormorant Garamond',serif;font-size:20px;">상품 등록</h3>
+      <button onclick="closeProductForm()" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;">×</button>
+    </div>
+    <div style="display:grid;gap:14px;">
+      <input id="pf-name" placeholder="상품명 *" class="ainput">
+      <select id="pf-cat" class="ainput">
+        <option value="">카테고리 선택 *</option>
+        <option>자동차 방향제</option>
+        <option>디퓨저</option>
+        <option>향수</option>
+        <option>룸스프레이</option>
+        <option>소취제</option>
+      </select>
+      <input id="pf-price" placeholder="판매가 (원) *" type="number" class="ainput" oninput="updateMargin()">
+      <input id="pf-cost" placeholder="원가 (원) *" type="number" class="ainput" oninput="updateMargin()">
+      <input id="pf-stock" placeholder="재고 수량 *" type="number" class="ainput">
+      <input id="pf-desc" placeholder="상품 설명" class="ainput">
+      <p id="pf-margin" style="color:#c9a84c;font-size:13px;"></p>
+      <div id="pf-error" style="color:#e05555;font-size:12px;"></div>
+      <button onclick="saveProduct()" class="abtn-gold" style="width:100%;padding:14px;">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- KAKAO FLOAT -->
 <a href="http://pf.kakao.com/_dfBbX/chat" class="kakao-float" target="_blank">
   <svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.536 1.444 4.772 3.64 6.152L4.5 21l4.63-2.407A11.27 11.27 0 0012 18c5.523 0 10-3.477 10-7.5S17.523 3 12 3z"/></svg>
@@ -1001,6 +1133,267 @@ function searchAddress() {
     }
   }).open();
 }
+
+
+// ===== ADMIN =====
+var ADMIN_EMAIL = 'alicia@kwellroutine.com';
+
+function openAdmin() {
+  document.getElementById('admin-panel').style.display = 'block';
+  adminTab('dashboard');
+}
+function closeAdmin() {
+  document.getElementById('admin-panel').style.display = 'none';
+}
+function adminTab(tab) {
+  document.querySelectorAll('.apanel').forEach(function(p){ p.style.display='none'; });
+  document.querySelectorAll('.atab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('admin-' + tab).style.display = 'block';
+  var tabBtn = document.getElementById('atab-' + tab);
+  if (tabBtn) tabBtn.classList.add('active');
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'products') renderProducts();
+  if (tab === 'orders') renderOrders();
+  if (tab === 'customers') renderCustomers('all');
+  if (tab === 'reviews') renderReviews();
+  if (tab === 'marketing') renderMarketing();
+}
+
+// --- 상품 ---
+function getProducts() { return JSON.parse(localStorage.getItem('lumiere_products') || '[]'); }
+function saveProducts(p) { localStorage.setItem('lumiere_products', JSON.stringify(p)); }
+
+var editingProductId = null;
+function openProductForm(id) {
+  var overlay = document.getElementById('product-form-overlay');
+  overlay.style.display = 'flex';
+  editingProductId = id || null;
+  document.getElementById('product-form-title').textContent = id ? '상품 수정' : '상품 등록';
+  document.getElementById('pf-error').textContent = '';
+  document.getElementById('pf-margin').textContent = '';
+  if (id) {
+    var p = getProducts().find(function(x){ return x.id === id; });
+    if (p) {
+      document.getElementById('pf-name').value = p.name;
+      document.getElementById('pf-cat').value = p.category;
+      document.getElementById('pf-price').value = p.price;
+      document.getElementById('pf-cost').value = p.cost;
+      document.getElementById('pf-stock').value = p.stock;
+      document.getElementById('pf-desc').value = p.desc || '';
+      updateMargin();
+    }
+  } else {
+    ['pf-name','pf-price','pf-cost','pf-stock','pf-desc'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('pf-cat').value = '';
+  }
+}
+function closeProductForm() { document.getElementById('product-form-overlay').style.display='none'; }
+function updateMargin() {
+  var price = parseInt(document.getElementById('pf-price').value) || 0;
+  var cost = parseInt(document.getElementById('pf-cost').value) || 0;
+  if (price && cost) {
+    var margin = price - cost;
+    var rate = Math.round((margin/price)*100);
+    document.getElementById('pf-margin').textContent = '순수익: ₩' + margin.toLocaleString() + ' (' + rate + '%)';
+  }
+}
+function saveProduct() {
+  var name = document.getElementById('pf-name').value.trim();
+  var cat = document.getElementById('pf-cat').value;
+  var price = parseInt(document.getElementById('pf-price').value);
+  var cost = parseInt(document.getElementById('pf-cost').value);
+  var stock = parseInt(document.getElementById('pf-stock').value);
+  var desc = document.getElementById('pf-desc').value.trim();
+  var err = document.getElementById('pf-error');
+  if (!name || !cat || !price || !cost || isNaN(stock)) { err.textContent = '필수 항목을 모두 입력해주세요.'; return; }
+  var products = getProducts();
+  if (editingProductId) {
+    var idx = products.findIndex(function(p){ return p.id === editingProductId; });
+    if (idx > -1) products[idx] = {id: editingProductId, name, category: cat, price, cost, stock, desc, updatedAt: new Date().toISOString()};
+  } else {
+    products.push({id: Date.now().toString(), name, category: cat, price, cost, stock, desc, createdAt: new Date().toISOString()});
+  }
+  saveProducts(products);
+  closeProductForm();
+  renderProducts();
+}
+function deleteProduct(id) {
+  if (!confirm('상품을 삭제할까요?')) return;
+  var products = getProducts().filter(function(p){ return p.id !== id; });
+  saveProducts(products);
+  renderProducts();
+}
+function renderProducts() {
+  var products = getProducts();
+  var el = document.getElementById('product-list');
+  if (!el) return;
+  if (products.length === 0) { el.innerHTML = '<p style="color:#555;text-align:center;padding:40px;">등록된 상품이 없습니다.</p>'; return; }
+  var html = '<table class="atable"><thead><tr><th>상품명</th><th>카테고리</th><th>판매가</th><th>원가</th><th>순수익</th><th>재고</th><th>관리</th></tr></thead><tbody>';
+  products.forEach(function(p) {
+    var margin = p.price - p.cost;
+    var stockColor = p.stock === 0 ? '#e05555' : p.stock <= 10 ? '#e0a030' : '#c8bfa8';
+    html += '<tr><td>' + p.name + '</td><td>' + p.category + '</td><td>₩' + p.price.toLocaleString() + '</td><td>₩' + p.cost.toLocaleString() + '</td><td style="color:#c9a84c;">₩' + margin.toLocaleString() + '</td><td style="color:' + stockColor + ';">' + p.stock + '</td>';
+    html += '<td><button onclick="openProductForm('' + p.id + '')" class="abtn-outline" style="margin-right:4px;">수정</button><button onclick="deleteProduct('' + p.id + '')" class="abtn-outline" style="color:#e05555;border-color:#e05555;">삭제</button></td></tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+// --- 주문 ---
+function getOrders() { return JSON.parse(localStorage.getItem('lumiere_orders') || '[]'); }
+function renderOrders() {
+  var orders = getOrders();
+  var el = document.getElementById('order-list');
+  if (!el) return;
+  if (orders.length === 0) { el.innerHTML = '<p style="color:#555;text-align:center;padding:40px;">주문 내역이 없습니다.</p>'; return; }
+  var html = '<table class="atable"><thead><tr><th>주문일</th><th>고객명</th><th>상품</th><th>금액</th><th>상태</th><th>관리</th></tr></thead><tbody>';
+  orders.forEach(function(o, idx) {
+    html += '<tr><td>' + (o.date||'').slice(0,10) + '</td><td>' + (o.customerName||'-') + '</td><td>' + (o.productName||'-') + '</td><td>₩' + ((o.amount||0).toLocaleString()) + '</td>';
+    html += '<td><select onchange="updateOrderStatus(' + idx + ',this.value)" style="background:#0f0e0c;color:#c8bfa8;border:1px solid #3a2e16;padding:4px 8px;border-radius:4px;font-size:11px;">';
+    ['배송 준비중','배송중','배송 완료'].forEach(function(s){
+      html += '<option' + (o.status===s?' selected':'') + '>' + s + '</option>';
+    });
+    html += '</select></td><td></td></tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+function updateOrderStatus(idx, status) {
+  var orders = getOrders();
+  orders[idx].status = status;
+  localStorage.setItem('lumiere_orders', JSON.stringify(orders));
+}
+
+// --- 고객 ---
+function renderCustomers(filter) {
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var orders = getOrders();
+  ['cf-all','cf-marketing','cf-no'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active-filter'); });
+  var activeId = filter==='all'?'cf-all':filter==='marketing'?'cf-marketing':'cf-no';
+  var activeEl = document.getElementById(activeId); if(activeEl) activeEl.classList.add('active-filter');
+  if (filter === 'marketing') users = users.filter(function(u){ return u.marketing; });
+  if (filter === 'no-marketing') users = users.filter(function(u){ return !u.marketing; });
+  var el = document.getElementById('customer-list');
+  if (!el) return;
+  if (users.length === 0) { el.innerHTML = '<p style="color:#555;text-align:center;padding:40px;">고객이 없습니다.</p>'; return; }
+  var html = '<table class="atable"><thead><tr><th>성함</th><th>이메일</th><th>연락처</th><th>가입일</th><th>마케팅</th><th>총 구매액</th></tr></thead><tbody>';
+  users.forEach(function(u) {
+    var total = orders.filter(function(o){ return o.customerEmail===u.email; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+    html += '<tr><td>' + u.name + '</td><td>' + u.email + '</td><td>' + (u.phone||'-') + '</td><td>' + (u.joinDate||'').slice(0,10) + '</td><td>' + (u.marketing?'✓ 동의':'미동의') + '</td><td>₩' + total.toLocaleString() + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+function filterCustomers(f) { renderCustomers(f); }
+
+// --- 리뷰 ---
+function getReviews() { return JSON.parse(localStorage.getItem('lumiere_reviews') || '[]'); }
+function renderReviews() {
+  var reviews = getReviews();
+  var el = document.getElementById('review-list');
+  if (!el) return;
+  if (reviews.length === 0) { el.innerHTML = '<p style="color:#555;text-align:center;padding:40px;">리뷰가 없습니다.</p>'; return; }
+  var html = '';
+  reviews.forEach(function(r, idx) {
+    html += '<div class="abox" style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#c9a84c;font-size:13px;">' + r.productName + '</span><span style="color:#555;font-size:11px;">' + (r.date||'').slice(0,10) + '</span></div>';
+    html += '<p style="color:#888;font-size:12px;margin-bottom:4px;">' + r.customerName + '</p>';
+    html += '<p style="color:#c8bfa8;font-size:14px;margin-bottom:12px;">' + r.content + '</p>';
+    if (r.reply) { html += '<div style="background:#0f0e0c;padding:10px 14px;border-left:2px solid #c9a84c;margin-bottom:8px;"><p style="color:#c9a84c;font-size:11px;margin-bottom:4px;">관리자 답변</p><p style="color:#c8bfa8;font-size:13px;">' + r.reply + '</p></div>'; }
+    html += '<div style="display:flex;gap:8px;"><input id="reply-' + idx + '" placeholder="답변 입력..." class="ainput" style="flex:1;"><button onclick="saveReply(' + idx + ')" class="abtn-gold">저장</button></div></div>';
+  });
+  el.innerHTML = html;
+}
+function saveReply(idx) {
+  var val = document.getElementById('reply-' + idx).value.trim();
+  if (!val) return;
+  var reviews = getReviews();
+  reviews[idx].reply = val;
+  localStorage.setItem('lumiere_reviews', JSON.stringify(reviews));
+  renderReviews();
+}
+
+// --- 마케팅 ---
+function renderMarketing() {
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var count = users.filter(function(u){ return u.marketing; }).length;
+  var el = document.getElementById('marketing-count');
+  if (el) el.textContent = count + '명';
+}
+function sendKakao() { alert('카카오 비즈메시지 API 연동 후 발송 가능합니다.
+현재 준비 중입니다.'); }
+
+// --- 대시보드 ---
+function renderDashboard() {
+  var orders = getOrders();
+  var products = getProducts();
+  var now = new Date();
+  var todayStr = now.toISOString().slice(0,10);
+  var weekAgo = new Date(now - 7*24*60*60*1000);
+  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  function calcSales(filtered) {
+    var rev = filtered.reduce(function(s,o){ return s+(o.amount||0); }, 0);
+    var profit = filtered.reduce(function(s,o){ return s+(o.profit||0); }, 0);
+    return {rev, profit};
+  }
+  var todayOrders = orders.filter(function(o){ return (o.date||'').slice(0,10)===todayStr; });
+  var weekOrders = orders.filter(function(o){ return new Date(o.date) >= weekAgo; });
+  var monthOrders = orders.filter(function(o){ return new Date(o.date) >= monthStart; });
+
+  var t=calcSales(todayOrders), w=calcSales(weekOrders), m=calcSales(monthOrders);
+  document.getElementById('dash-today').textContent = '₩'+t.rev.toLocaleString();
+  document.getElementById('dash-today-profit').textContent = '순수익 ₩'+t.profit.toLocaleString();
+  document.getElementById('dash-week').textContent = '₩'+w.rev.toLocaleString();
+  document.getElementById('dash-week-profit').textContent = '순수익 ₩'+w.profit.toLocaleString();
+  document.getElementById('dash-month').textContent = '₩'+m.rev.toLocaleString();
+  document.getElementById('dash-month-profit').textContent = '순수익 ₩'+m.profit.toLocaleString();
+
+  // 상품 순위
+  var pRank = {};
+  orders.forEach(function(o){ pRank[o.productName] = (pRank[o.productName]||0) + (o.qty||1); });
+  var pSorted = Object.entries(pRank).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5);
+  var pEl = document.getElementById('rank-products');
+  if (pEl) pEl.innerHTML = pSorted.length ? pSorted.map(function(p,i){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1510;color:#c8bfa8;font-size:13px;"><span>'+(i+1)+'. '+p[0]+'</span><span style="color:#c9a84c;">'+p[1]+'개</span></div>'; }).join('') : '<p style="color:#555;font-size:13px;">주문 데이터 없음</p>';
+
+  // 고객 순위
+  var cRank = {};
+  orders.forEach(function(o){ cRank[o.customerName] = (cRank[o.customerName]||0) + (o.amount||0); });
+  var cSorted = Object.entries(cRank).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5);
+  var cEl = document.getElementById('rank-customers');
+  if (cEl) cEl.innerHTML = cSorted.length ? cSorted.map(function(c,i){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1510;color:#c8bfa8;font-size:13px;"><span>'+(i+1)+'. '+c[0]+'</span><span style="color:#c9a84c;">₩'+c[1].toLocaleString()+'</span></div>'; }).join('') : '<p style="color:#555;font-size:13px;">주문 데이터 없음</p>';
+}
+
+// --- 엑셀 내보내기 ---
+function exportExcel(type) {
+  var data, filename, headers;
+  if (type === 'orders') {
+    data = getOrders();
+    headers = ['주문일','고객명','이메일','상품명','수량','금액','순수익','상태'];
+    filename = '뤼미에르_매출현황.csv';
+  } else if (type === 'products') {
+    data = getProducts();
+    headers = ['상품명','카테고리','판매가','원가','순수익','재고'];
+    filename = '뤼미에르_상품목록.csv';
+  } else if (type === 'customers') {
+    data = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+    headers = ['성함','이메일','연락처','가입일','마케팅동의'];
+    filename = '뤼미에르_고객DB.csv';
+  }
+  var csv = '﻿' + headers.join(',') + '
+';
+  data.forEach(function(row) {
+    var line = [];
+    if (type === 'orders') line = [(row.date||'').slice(0,10), row.customerName||'', row.customerEmail||'', row.productName||'', row.qty||1, row.amount||0, row.profit||0, row.status||''];
+    if (type === 'products') line = [row.name, row.category, row.price, row.cost, (row.price-row.cost), row.stock];
+    if (type === 'customers') line = [row.name, row.email, row.phone||'', (row.joinDate||'').slice(0,10), row.marketing?'동의':'미동의'];
+    csv += line.map(function(v){ return '"'+String(v)+'"'; }).join(',') + '
+';
+  });
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+}
+// ===== END ADMIN =====
+
 </script>
 </body>
 </html>
