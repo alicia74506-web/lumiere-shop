@@ -179,7 +179,7 @@ section{padding:100px 60px}
 
 /* CONTACT */
 #contact{background:var(--dark);display:grid;grid-template-columns:1fr 1fr;gap:80px}
-.contact-info .section-title{color:var(--white)}
+.contact-info .section-title{color:var(--white);font-size:clamp(28px,3.5vw,48px);line-height:1.3;}
 .contact-detail{margin-bottom:32px}
 .contact-detail-label{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
 .contact-detail-value{color:rgba(255,255,255,0.7);font-size:14px}
@@ -493,7 +493,7 @@ window.addEventListener('DOMContentLoaded', function(){
       </div>
     </div>
     <div class="b2b-card">
-      <div class="b2b-card-img"><img src="s2_perfume.jpg" alt="Luxury Kit"></div>
+      <div class="b2b-card-img"><img src="b2b2_luxury.jpg" alt="Luxury Kit"></div>
       <div class="b2b-card-body">
         <p class="b2b-card-num">02</p>
         <h3 class="b2b-card-title">LUMIÈRE Luxury Kit</h3>
@@ -517,7 +517,7 @@ window.addEventListener('DOMContentLoaded', function(){
       </div>
     </div>
     <div class="b2b-card">
-      <div class="b2b-card-img"><img src="s5_odor.jpg" alt="Odor Eliminator"></div>
+      <div class="b2b-card-img"><img src="b2b4_odor.jpg" alt="Odor Eliminator"></div>
       <div class="b2b-card-body">
         <p class="b2b-card-num">04</p>
         <h3 class="b2b-card-title">Odor Eliminator</h3>
@@ -531,7 +531,7 @@ window.addEventListener('DOMContentLoaded', function(){
   </div>
   <!-- Gift Banner -->
   <div class="b2b-gift">
-    <div class="b2b-gift-img"><img src="hero.jpg" alt="Gift"></div>
+    <div class="b2b-gift-img"><img src="gift.jpg" alt="Gift"></div>
     <div class="b2b-gift-body">
       <p class="section-label">기업구매 문의</p>
       <h3>클라이언트와 파트너를 위한<br><em>특별한 선물</em></h3>
@@ -546,6 +546,14 @@ window.addEventListener('DOMContentLoaded', function(){
   <p class="section-label">Art of Scents</p>
   <h2 class="section-title"><em>Shop</em></h2>
   <p style="color:var(--text-light);font-size:14px">향이 머무는 모든 공간을 위한 뤼미에르 컬렉션</p>
+  <!-- 등급 혜택 안내 -->
+  <div id="shop-grade-banner" style="display:none;background:#faf6f0;border:1px solid #e0d4b8;border-radius:6px;padding:16px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <div>
+      <span id="shop-grade-name" style="font-size:12px;letter-spacing:2px;color:#c9a84c;font-weight:600;text-transform:uppercase;"></span>
+      <span id="shop-grade-benefit" style="font-size:13px;color:#5a4a2a;margin-left:12px;"></span>
+    </div>
+    <span style="font-size:11px;color:#9a8a6a;">혜택은 결제 시 자동 적용됩니다</span>
+  </div>
   <div class="shop-filter" id="shop-filter"></div>
   <div class="shop-grid" id="shop-grid"></div>
 </section>
@@ -603,9 +611,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 <!-- FAQ -->
 <section id="faq">
-  <div class="faq-img">
-    <img src="s5_odor.jpg" alt="FAQ">
-  </div>
+
   <div>
     <p class="section-label">FAQ</p>
     <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
@@ -639,8 +645,8 @@ window.addEventListener('DOMContentLoaded', function(){
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-info">
-    <p class="section-label">Contact</p>
-    <h2 class="section-title" style="color:white">함께 시작해요,<br><em>당신의 향 이야기</em></h2>
+    <p class="section-label">B2B · CONTACT</p>
+    <h2 class="section-title" style="color:white">공간에 향을 입히고 싶으세요?<br>특별한 날에 향을 선물하고 싶으세요?<br><em>그렇다면 뤼미에르와 함께 시작하세요.</em></h2>
     <div class="contact-detail"><p class="contact-detail-label">Address</p><p class="contact-detail-value">서울시 용산구 새창로 20길 10 3층</p></div>
     <div class="contact-detail"><p class="contact-detail-label">Phone</p><p class="contact-detail-value">070-7658-1046</p></div>
     <div class="contact-detail"><p class="contact-detail-label">Email</p><p class="contact-detail-value">alicia@kwellroutine.com</p></div>
@@ -965,34 +971,35 @@ window.addEventListener('DOMContentLoaded', function(){
       <div class="abox" style="margin-bottom:24px;">
         <h3 class="abox-title">등급 기준</h3>
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
-          <div style="text-align:center;padding:20px;border:1px solid #e0d4b8;border-radius:6px;">
-            <p style="font-size:24px;margin-bottom:8px;">🤍</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">일반</p>
-            <p style="color:#9a8a6a;font-size:11px;">0원 ~</p>
+          <div style="padding:24px 16px;border:1px solid #e0d4b8;border-radius:6px;text-align:center;">
+            <p style="font-size:10px;letter-spacing:3px;color:#9a8a6a;margin-bottom:12px;text-transform:uppercase;">General</p>
+            <p style="font-weight:600;color:#1a1510;font-size:16px;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">일반</p>
+            <p style="color:#9a8a6a;font-size:11px;margin-bottom:6px;">0원 ~</p>
+            <p style="color:#bbb;font-size:11px;">기본 혜택</p>
           </div>
-          <div style="text-align:center;padding:20px;border:1px solid #c0c0c0;border-radius:6px;background:#fafafa;">
-            <p style="font-size:24px;margin-bottom:8px;">🥈</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">실버</p>
-            <p style="color:#9a8a6a;font-size:11px;">100만원 ~</p>
-            <p style="color:#888;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
+          <div style="padding:24px 16px;border:1px solid #b0b8c1;border-radius:6px;text-align:center;background:#f8f9fa;">
+            <p style="font-size:10px;letter-spacing:3px;color:#6c757d;margin-bottom:12px;text-transform:uppercase;">Silver</p>
+            <p style="font-weight:600;color:#1a1510;font-size:16px;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">실버</p>
+            <p style="color:#9a8a6a;font-size:11px;margin-bottom:6px;">100만원 ~</p>
+            <p style="color:#6c757d;font-size:11px;font-weight:500;">무료배송 (상시)</p>
           </div>
-          <div style="text-align:center;padding:20px;border:1px solid #cd7f32;border-radius:6px;background:#fdf8f4;">
-            <p style="font-size:24px;margin-bottom:8px;">🥉</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">브론즈</p>
-            <p style="color:#9a8a6a;font-size:11px;">200만원 ~</p>
-            <p style="color:#cd7f32;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
+          <div style="padding:24px 16px;border:1px solid #cd7f32;border-radius:6px;text-align:center;background:#fdf8f4;">
+            <p style="font-size:10px;letter-spacing:3px;color:#cd7f32;margin-bottom:12px;text-transform:uppercase;">Bronze</p>
+            <p style="font-weight:600;color:#1a1510;font-size:16px;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">브론즈</p>
+            <p style="color:#9a8a6a;font-size:11px;margin-bottom:6px;">200만원 ~</p>
+            <p style="color:#cd7f32;font-size:11px;font-weight:500;">상시 5% 자동 할인</p>
           </div>
-          <div style="text-align:center;padding:20px;border:1px solid #c9a84c;border-radius:6px;background:#faf6f0;">
-            <p style="font-size:24px;margin-bottom:8px;">🥇</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">골드</p>
-            <p style="color:#9a8a6a;font-size:11px;">500만원 ~</p>
-            <p style="color:#c9a84c;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
+          <div style="padding:24px 16px;border:1px solid #c9a84c;border-radius:6px;text-align:center;background:#faf6f0;">
+            <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:12px;text-transform:uppercase;">Gold</p>
+            <p style="font-weight:600;color:#1a1510;font-size:16px;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">골드</p>
+            <p style="color:#9a8a6a;font-size:11px;margin-bottom:6px;">500만원 ~</p>
+            <p style="color:#c9a84c;font-size:11px;font-weight:500;">상시 10% 자동 할인</p>
           </div>
-          <div style="text-align:center;padding:20px;border:2px solid #00bcd4;border-radius:6px;background:#f0faff;">
-            <p style="font-size:24px;margin-bottom:8px;">💎</p>
-            <p style="font-weight:600;color:#1a1510;margin-bottom:4px;">다이아몬드</p>
-            <p style="color:#9a8a6a;font-size:11px;">1,000만원 ~</p>
-            <p style="color:#00bcd4;font-size:11px;margin-top:4px;">등급 쿠폰 자동 발급</p>
+          <div style="padding:24px 16px;border:2px solid #4fc3f7;border-radius:6px;text-align:center;background:#f0faff;">
+            <p style="font-size:10px;letter-spacing:3px;color:#0288d1;margin-bottom:12px;text-transform:uppercase;">Diamond</p>
+            <p style="font-weight:600;color:#1a1510;font-size:16px;margin-bottom:8px;font-family:'Cormorant Garamond',serif;">다이아몬드</p>
+            <p style="color:#9a8a6a;font-size:11px;margin-bottom:6px;">1,000만원 ~</p>
+            <p style="color:#0288d1;font-size:11px;font-weight:500;">상시 15% 자동 할인</p>
           </div>
         </div>
       </div>
@@ -1041,15 +1048,15 @@ window.addEventListener('DOMContentLoaded', function(){
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div>
-              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 *</label>
-              <select id="pf-cat" class="ainput" style="background:#faf8f4;">
-                <option value="">선택</option>
+              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 * (직접 입력 가능)</label>
+              <input id="pf-cat" class="ainput" style="background:#faf8f4;" placeholder="카테고리 입력 또는 선택" list="pf-cat-list">
+              <datalist id="pf-cat-list">
                 <option>자동차 방향제</option>
                 <option>디퓨저</option>
                 <option>향수</option>
                 <option>룸스프레이</option>
                 <option>소취제</option>
-              </select>
+              </datalist>
             </div>
             <div>
               <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">상태 배지</label>
@@ -1618,7 +1625,7 @@ function previewProductImg() {
 }
 function saveProduct() {
   var name = document.getElementById('pf-name').value.trim();
-  var cat = document.getElementById('pf-cat').value;
+  var cat = document.getElementById('pf-cat').value.trim();
   var price = parseInt(document.getElementById('pf-price').value);
   var cost = parseInt(document.getElementById('pf-cost').value);
   var stock = parseInt(document.getElementById('pf-stock').value);
@@ -1966,11 +1973,32 @@ function renderShop(filterCat) {
   var filterEl = document.getElementById('shop-filter');
   if (!grid) return;
 
+  // 등급 배너 표시
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  var banner = document.getElementById('shop-grade-banner');
+  if (u && banner) {
+    var grade = getUserGrade();
+    if (grade.name !== '일반') {
+      banner.style.display = 'flex';
+      var nameEl = document.getElementById('shop-grade-name');
+      var benefitEl = document.getElementById('shop-grade-benefit');
+      if (nameEl) nameEl.textContent = grade.name;
+      if (benefitEl) {
+        var benefits = [];
+        if (grade.discount > 0) benefits.push(grade.discount + '% 자동 할인');
+        if (grade.freeShipping) benefits.push('무료배송');
+        benefitEl.textContent = benefits.join(' · ') + ' 적용 중';
+      }
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
   // If no products in localStorage, show default hardcoded ones
   if (products.length === 0) {
     products = [
-      {id:'default1', name:'Lumière Vent Clip', category:'자동차 방향제', price:28000, cost:0, stock:99, desc:'차량 에어벤트에 간편하게 클립하는 럭셔리 방향제', imgurl:'s3_car.jpg', status:'Coming Soon'},
-      {id:'default2', name:'Lumière Reed Diffuser', category:'디퓨저', price:65000, cost:0, stock:99, desc:'공간의 향을 섬세하게 채우는 리드 디퓨저', imgurl:'shop1_car.jpg', status:'Coming Soon'},
+      {id:'default1', name:'Lumière Vent Clip', category:'자동차 방향제', price:28000, cost:0, stock:99, desc:'차량 에어벤트에 간편하게 클립하는 럭셔리 방향제', imgurl:'shop1_car.jpg', status:'Coming Soon'},
+      {id:'default2', name:'Lumière Reed Diffuser', category:'디퓨저', price:65000, cost:0, stock:99, desc:'공간의 향을 섬세하게 채우는 리드 디퓨저', imgurl:'shop2_diffuser.jpg', status:'Coming Soon'},
       {id:'default3', name:'Lumière Eau de Parfum', category:'향수', price:120000, cost:0, stock:99, desc:'뤼미에르의 시그니처 향을 담은 퍼스널 향수', imgurl:'s2_perfume.jpg', status:'Coming Soon'}
     ];
   }
@@ -2113,11 +2141,11 @@ function renderSettlement() {
 
 // ===== 회원등급 =====
 function getGrade(total) {
-  if (total >= 10000000) return {name:'다이아몬드', icon:'💎', color:'#00bcd4'};
-  if (total >= 5000000)  return {name:'골드', icon:'🥇', color:'#c9a84c'};
-  if (total >= 2000000)  return {name:'브론즈', icon:'🥉', color:'#cd7f32'};
-  if (total >= 1000000)  return {name:'실버', icon:'🥈', color:'#888'};
-  return {name:'일반', icon:'🤍', color:'#3a2e1a'};
+  if (total >= 10000000) return {name:'다이아몬드', color:'#0288d1', discount:15, freeShipping:true};
+  if (total >= 5000000)  return {name:'골드', color:'#c9a84c', discount:10, freeShipping:true};
+  if (total >= 2000000)  return {name:'브론즈', color:'#cd7f32', discount:5, freeShipping:true};
+  if (total >= 1000000)  return {name:'실버', color:'#6c757d', discount:0, freeShipping:true};
+  return {name:'일반', color:'#3a2e1a', discount:0, freeShipping:false};
 }
 
 function renderMemberGrades() {
@@ -2192,25 +2220,41 @@ function closeCheckout() {
   document.getElementById('checkout-overlay').style.display = 'none';
 }
 
+function getUserGrade() {
+  var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (!u) return getGrade(0);
+  var orders = getOrders();
+  var total = orders.filter(function(o){ return o.customerEmail===u.email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+  return getGrade(total);
+}
+
 function updateCheckoutTotal() {
   var subtotal = cart.reduce(function(s,i){ return s+(i.price*i.qty); }, 0);
-  var shipping = subtotal >= 50000 ? 0 : 3000;
-  var discount = 0;
+  var grade = getUserGrade();
+  var shipping = grade.freeShipping || subtotal >= 50000 ? 0 : 3000;
+  var gradeDiscount = grade.discount > 0 ? Math.round(subtotal * grade.discount / 100) : 0;
+  var couponDiscount = 0;
   if (appliedCoupon) {
-    discount = appliedCoupon.type === 'percent'
+    couponDiscount = appliedCoupon.type === 'percent'
       ? Math.round(subtotal * appliedCoupon.discount / 100)
       : appliedCoupon.discount;
   }
+  var discount = gradeDiscount + couponDiscount;
   var total = subtotal + shipping - discount;
 
   document.getElementById('co-subtotal').textContent = '₩' + subtotal.toLocaleString();
   document.getElementById('co-shipping').textContent = shipping === 0 ? '무료' : '₩' + shipping.toLocaleString();
   document.getElementById('co-total').textContent = '₩' + total.toLocaleString();
+  var discRow = document.getElementById('co-discount-row');
   if (discount > 0) {
-    document.getElementById('co-discount-row').style.display = 'flex';
+    discRow.style.display = 'flex';
+    var discLabel = discRow.querySelector('span:first-child');
+    if (discLabel) discLabel.textContent = grade.discount > 0 ? grade.name+' '+grade.discount+'% + 쿠폰 할인' : '쿠폰 할인';
     document.getElementById('co-discount').textContent = '-₩' + discount.toLocaleString();
+  } else {
+    discRow.style.display = 'none';
   }
-  return {subtotal, shipping, discount, total};
+  return {subtotal, shipping, discount:gradeDiscount, couponDiscount, total};
 }
 
 function applyCoupon() {
