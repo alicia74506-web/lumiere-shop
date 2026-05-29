@@ -293,6 +293,7 @@ function doJoin() {
   if (!terms || !privacy || !age) { err.textContent = '필수 항목에 모두 동의해주세요.'; return; }
   var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
   if (users.find(function(u){ return u.email === email; })) { err.textContent = '이미 가입된 이메일입니다.'; return; }
+  if (phone && users.find(function(u){ return u.phone && u.phone.replace(/-/g,'') === phone.replace(/-/g,''); })) { err.textContent = '이미 가입된 휴대폰 번호입니다.'; return; }
   var newUser = { name: name, email: email, pw: pw, phone: phone, marketing: marketing, joinDate: new Date().toISOString() };
   users.push(newUser);
   localStorage.setItem('lumiere_users', JSON.stringify(users));
@@ -760,7 +761,67 @@ window.addEventListener('DOMContentLoaded', function(){
     <div style="margin-bottom:20px;"><label style="display:block;font-size:11px;color:#666;margin-bottom:5px;">비밀번호</label><input id="login-pw" type="password" placeholder="비밀번호" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:14px;outline:none;" onkeypress="if(event.key==='Enter')doLogin()"></div>
     <p id="login-error" style="color:#e53935;font-size:12px;margin-bottom:12px;text-align:center;min-height:16px;"></p>
     <button onclick="doLogin()" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">로그인</button>
+    <div style="display:flex;justify-content:center;gap:16px;margin-bottom:14px;">
+      <a href="#" onclick="showFindEmail();return false;" style="font-size:12px;color:#999;text-decoration:none;">이메일 찾기</a>
+      <span style="color:#ddd;">|</span>
+      <a href="#" onclick="showFindPw();return false;" style="font-size:12px;color:#999;text-decoration:none;">비밀번호 찾기</a>
+    </div>
     <p style="text-align:center;font-size:13px;color:#666;">회원이 아닌가요? <a href="#" onclick="showJoin();return false;" style="color:#b8975a;text-decoration:none;">가입하기</a></p>
+  </div>
+</div>
+
+
+<!-- 이메일 찾기 모달 -->
+<div id="find-email-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:2100;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:40px;width:400px;max-width:90vw;position:relative;">
+    <button onclick="closeModal('find-email-modal')" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#999;">×</button>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;letter-spacing:2px;margin-bottom:4px;">이메일 찾기</h2>
+    <p style="font-size:11px;color:#999;margin-bottom:24px;">가입 시 등록한 휴대폰 번호로 확인합니다</p>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:11px;color:#666;margin-bottom:5px;">성함</label>
+      <input id="fe-name" placeholder="가입 시 등록한 성함" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:14px;outline:none;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11px;color:#666;margin-bottom:5px;">휴대폰 번호</label>
+      <input id="fe-phone" placeholder="010-0000-0000" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:14px;outline:none;">
+    </div>
+    <p id="fe-error" style="color:#e53935;font-size:12px;margin-bottom:12px;text-align:center;min-height:16px;"></p>
+    <div id="fe-result" style="display:none;background:#f8f4ee;border:1px solid #e0c98a;border-radius:6px;padding:16px;margin-bottom:16px;text-align:center;">
+      <p style="font-size:11px;color:#9a8a6a;margin-bottom:6px;">가입된 이메일</p>
+      <p id="fe-result-email" style="font-size:16px;font-weight:600;color:#1a1510;"></p>
+    </div>
+    <button onclick="doFindEmail()" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">이메일 찾기</button>
+    <p style="text-align:center;font-size:12px;color:#999;cursor:pointer;" onclick="closeModal('find-email-modal');openModal('login-modal');">← 로그인으로 돌아가기</p>
+  </div>
+</div>
+
+<!-- 비밀번호 찾기 모달 -->
+<div id="find-pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:2100;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:40px;width:400px;max-width:90vw;position:relative;">
+    <button onclick="closeModal('find-pw-modal')" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#999;">×</button>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;letter-spacing:2px;margin-bottom:4px;">비밀번호 찾기</h2>
+    <p style="font-size:11px;color:#999;margin-bottom:24px;">이메일과 휴대폰 번호로 본인 확인 후 임시 비밀번호를 발급합니다</p>
+    <div id="fpw-step1">
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:11px;color:#666;margin-bottom:5px;">이메일</label>
+        <input id="fpw-email" placeholder="가입 시 등록한 이메일" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:14px;outline:none;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:11px;color:#666;margin-bottom:5px;">휴대폰 번호</label>
+        <input id="fpw-phone" placeholder="010-0000-0000" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:14px;outline:none;">
+      </div>
+      <p id="fpw-error" style="color:#e53935;font-size:12px;margin-bottom:12px;text-align:center;min-height:16px;"></p>
+      <button onclick="doFindPw()" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">본인 확인</button>
+    </div>
+    <div id="fpw-step2" style="display:none;">
+      <div style="background:#f8f4ee;border:1px solid #e0c98a;border-radius:6px;padding:16px;margin-bottom:20px;text-align:center;">
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:6px;">임시 비밀번호</p>
+        <p id="fpw-temp" style="font-size:20px;font-weight:700;color:#1a1510;letter-spacing:4px;"></p>
+        <p style="font-size:11px;color:#9a8a6a;margin-top:8px;">로그인 후 마이페이지에서 비밀번호를 변경해주세요</p>
+      </div>
+      <button onclick="closeModal('find-pw-modal');openModal('login-modal')" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">로그인하러 가기</button>
+    </div>
+    <p style="text-align:center;font-size:12px;color:#999;cursor:pointer;" onclick="closeModal('find-pw-modal');openModal('login-modal');">← 로그인으로 돌아가기</p>
   </div>
 </div>
 
