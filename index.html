@@ -419,7 +419,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <li><a href="#founder">Founder</a></li>
     <li><a href="#partners">Partners</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact">기업문의</a></li>
   </ul>
   <div class="nav-right">
     <button onclick="openCart()" style="background:none;border:none;cursor:pointer;color:var(--white);position:relative;padding:4px 8px;margin-right:4px;" title="장바구니">
@@ -623,18 +623,20 @@ window.addEventListener('DOMContentLoaded', function(){
 </section>
 
 <!-- FOUNDER -->
-<section id="founder" style="padding:100px 60px;display:block;background:var(--dark)">
-  <div class="founder-body" style="max-width:800px;margin:0 auto;padding:0">
+<section id="founder" style="background:var(--dark);display:grid;grid-template-columns:1fr 1fr;min-height:600px;">
+  <!-- 왼쪽: 텍스트 -->
+  <div class="founder-body">
     <p class="section-label">Founder</p>
-    <h2 class="section-title"><em>향</em>으로 완성하는<br>공간의 기억</h2>
-    <blockquote class="founder-quote">"특급호텔에서 25년을 일하며, 저는 공간을 완성하는 마지막 한 조각이 무엇인지 늘 고민했습니다.<br>그 답은 향이었습니다."</blockquote>
-    <ul class="founder-bio">
-      <li>특급호텔 25년 경력 (프런트, 웨딩, 프로모션, 교육)</li>
-      <li>마세라티 VIP 럭셔리 키트 기획</li>
-      <li>유명 입시학원 × 뤼미에르 집중력 공간조향 기획</li>
-      <li>다양한 업종의 B2B 향 솔루션 개발</li>
-      <li>산후조리원 공간 조향 및 향기 마케팅 총괄</li>
-    </ul>
+    <h2 class="section-title" style="margin-bottom:32px;"><em>빛처럼,</em> 향처럼</h2>
+    <div class="founder-quote" style="font-family:'Noto Sans KR',sans-serif;font-style:normal;font-size:14px;line-height:2.1;color:rgba(255,255,255,0.75);border-left:2px solid var(--gold);padding-left:24px;">
+      <p style="font-size:16px;font-weight:500;color:var(--white);margin-bottom:20px;font-family:'Cormorant Garamond',serif;font-style:italic;">"빛은 공간을 밝히고, 향은 공간을 기억하게 합니다."</p>
+      <p style="margin-bottom:16px;">어릴 적, 산속 깊이 개울과 함께 자리한 작고 소박한 사찰에서 맡았던 공기의 기억은 시간이 지나도 희미해지지 않습니다. 사람들은 이것을 '향수병'이라고 부릅니다.</p>
+      <p style="margin-bottom:16px;">그리고 이 감정은 비단 한 사람만의 것이 아닙니다. 누군가는 파리의 공기를, 누군가는 교토의 골목을, 누군가는 뉴질랜드의 바다 냄새를 기억합니다.</p>
+      <p style="margin-bottom:16px;">여행은 결국, 눈으로 보는 것이 아니라 감각으로 남는 것이기 때문입니다.</p>
+      <p style="margin-bottom:16px;">그렇다면 당신이 머무는 공간은 어떨까요. 그 공간을 떠난 후에도 기억 속에 남는 향이 있을까요.</p>
+      <p style="margin-bottom:16px;">Lumière는 이 질문에서 시작되었습니다. 향수를 만드는 것이 아니라, 공간을 기억하게 만드는 방법에 대한 이야기입니다.</p>
+      <p style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;">Lumière — 빛처럼, 향처럼.</p>
+    </div>
     <div class="founder-name-card">
       <div class="founder-initial">李</div>
       <div class="founder-name-info">
@@ -644,6 +646,10 @@ window.addEventListener('DOMContentLoaded', function(){
       </div>
     </div>
   </div>
+  <!-- 오른쪽: 파운더 사진 -->
+  <div class="founder-img-wrap">
+    <img src="about.jpg" alt="Alicia Yi">
+  </div>
 </section>
 
 <!-- PARTNERS -->
@@ -651,7 +657,7 @@ window.addEventListener('DOMContentLoaded', function(){
   <p class="section-label" style="text-align:center">Partners</p>
   <h2 class="section-title" style="text-align:center">함께한 <em>브랜드들</em></h2>
   <div class="partners-stats">
-    <div class="stat-item"><div class="stat-num">25</div><div class="stat-label">년 호텔 경력</div></div>
+    <div class="stat-item"><div class="stat-num" style="font-size:20px;letter-spacing:1px;">Allergy</div><div class="stat-label">Reduce</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">천연 원료</div></div>
     <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">맞춤 향 설계</div></div>
   </div>
@@ -709,8 +715,8 @@ window.addEventListener('DOMContentLoaded', function(){
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-info">
-    <p class="section-label">B2B · CONTACT</p>
-    <h2 class="section-title" style="color:white;font-size:clamp(20px,2.2vw,36px);line-height:1.7;">공간에 향을 입히고 싶으세요?<br>특별한 날에 향을 선물하고 싶으세요?<br><em>그렇다면 뤼미에르와 함께 시작하세요.</em></h2>
+    <p class="section-label">기업 문의</p>
+    <h2 class="section-title" style="color:white;font-size:clamp(20px,2.2vw,36px);line-height:1.7;"><em>공간조향부터 기업 선물까지,<br>뤼미에르가 함께합니다.</em></h2>
     <div class="contact-detail"><p class="contact-detail-label">Address</p><p class="contact-detail-value">서울시 용산구 새창로 20길 10 3층</p></div>
     <div class="contact-detail"><p class="contact-detail-label">Phone</p><p class="contact-detail-value">070-7658-1046</p></div>
     <div class="contact-detail"><p class="contact-detail-label">Email</p><p class="contact-detail-value">alicia@kwellroutine.com</p></div>
@@ -787,7 +793,7 @@ window.addEventListener('DOMContentLoaded', function(){
       <li><a href="#founder">Founder</a></li>
       <li><a href="#partners">Partners</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact">기업문의</a></li>
     </ul>
   </div>
   <div class="footer-col">
@@ -1388,8 +1394,12 @@ window.addEventListener('DOMContentLoaded', function(){
               <input id="mp-name" class="mp-input" placeholder="이름">
             </div>
             <div>
-              <label class="mp-label">비밀번호</label>
-              <input id="mp-pw" type="password" class="mp-input" placeholder="새 비밀번호">
+              <label class="mp-label">현재 비밀번호</label>
+              <input id="mp-pw-current" type="password" class="mp-input" placeholder="현재 비밀번호 입력">
+            </div>
+            <div>
+              <label class="mp-label">새 비밀번호</label>
+              <input id="mp-pw" type="password" class="mp-input" placeholder="새 비밀번호 (변경 시에만 입력)">
             </div>
             <div>
               <label class="mp-label">비밀번호 확인</label>
@@ -2788,10 +2798,16 @@ function checkMpPw() {
 function saveMyInfo() {
   var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
   if (!u) return;
+  var pwCurrent = document.getElementById('mp-pw-current').value;
   var pw = document.getElementById('mp-pw').value;
   var pw2 = document.getElementById('mp-pw2').value;
   var err = document.getElementById('mp-info-err');
-  if (pw && pw !== pw2) { err.textContent='비밀번호가 일치하지 않습니다.'; return; }
+  if (pw) {
+    if (!pwCurrent) { err.textContent='현재 비밀번호를 입력해주세요.'; return; }
+    if (pwCurrent !== u.pw) { err.textContent='현재 비밀번호가 일치하지 않습니다.'; return; }
+    if (pw !== pw2) { err.textContent='새 비밀번호가 일치하지 않습니다.'; return; }
+    if (pw.length < 8) { err.textContent='비밀번호는 8자 이상이어야 합니다.'; return; }
+  }
   var updated = {
     name: document.getElementById('mp-name').value.trim() || u.name,
     email: u.email,
