@@ -432,7 +432,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <button id="nav-admin" onclick="openAdmin()" style="display:none;font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:8px 16px;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;margin-right:4px;">Admin</button>
     <button id="nav-logout" onclick="doLogout()" style="display:none;font-size:11px;letter-spacing:2px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Logout</button>
     <button id="nav-join" onclick="openModal('join-modal')" style="font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:8px 20px;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;">Join</button>
-    <a href="#contact" class="nav-btn">문의하기</a>
+    <a href="#contact" class="nav-btn">기업문의</a>
   </div>
 </nav>
 
@@ -446,7 +446,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <p class="hero-quote">"향은 공간의 기억이 되고,<br>브랜드의 언어가 된다."</p>
     <div class="hero-btns">
       <a href="#b2b" class="btn-primary">B2B 솔루션 보기</a>
-      <a href="#contact" class="btn-outline">문의하기</a>
+      <a href="#contact" class="btn-outline">기업문의</a>
     </div>
   </div>
   <div class="scroll-hint">
@@ -602,7 +602,7 @@ window.addEventListener('DOMContentLoaded', function(){
       <p class="section-label">기업구매 문의</p>
       <h3>클라이언트와 파트너를 위한<br><em>특별한 선물</em></h3>
       <p>클라이언트, 파트너 및 임직원을 위한 선물을 뤼미에르와 함께 준비해 보세요. 정성이 가득 담긴 뤼미에르의 다양한 기프트 세트는 웨딩을 비롯한 각종 가족 행사의 답례품으로도 손색 없는 선택입니다.</p>
-      <a href="#contact" class="btn-primary">B2B 문의하기</a>
+      <a href="#contact" class="btn-primary">기업문의</a>
     </div>
   </div>
 </section>
@@ -625,32 +625,48 @@ window.addEventListener('DOMContentLoaded', function(){
 </section>
 
 <!-- FOUNDER -->
-<section id="founder" style="background:var(--dark);display:grid;grid-template-columns:1fr 1fr;min-height:600px;">
-  <!-- 왼쪽: 텍스트 -->
-  <div class="founder-body">
-    <p class="section-label">Founder</p>
-    <h2 class="section-title" style="margin-bottom:32px;"><em>빛처럼,</em> 향처럼</h2>
-    <div class="founder-quote" style="font-family:'Noto Sans KR',sans-serif;font-style:normal;font-size:14px;line-height:2.1;color:rgba(255,255,255,0.75);border-left:2px solid var(--gold);padding-left:24px;">
-      <p style="font-size:16px;font-weight:500;color:var(--white);margin-bottom:20px;font-family:'Cormorant Garamond',serif;font-style:italic;">"빛은 공간을 밝히고, 향은 공간을 기억하게 합니다."</p>
-      <p style="margin-bottom:16px;">어릴 적, 산속 깊이 개울과 함께 자리한 작고 소박한 사찰에서 맡았던 공기의 기억은 시간이 지나도 희미해지지 않습니다. 사람들은 이것을 '향수병'이라고 부릅니다.</p>
-      <p style="margin-bottom:16px;">그리고 이 감정은 비단 한 사람만의 것이 아닙니다. 누군가는 파리의 공기를, 누군가는 교토의 골목을, 누군가는 뉴질랜드의 바다 냄새를 기억합니다.</p>
-      <p style="margin-bottom:16px;">여행은 결국, 눈으로 보는 것이 아니라 감각으로 남는 것이기 때문입니다.</p>
-      <p style="margin-bottom:16px;">그렇다면 당신이 머무는 공간은 어떨까요. 그 공간을 떠난 후에도 기억 속에 남는 향이 있을까요.</p>
-      <p style="margin-bottom:16px;">Lumière는 이 질문에서 시작되었습니다. 향수를 만드는 것이 아니라, 공간을 기억하게 만드는 방법에 대한 이야기입니다.</p>
-      <p style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;">Lumière — 빛처럼, 향처럼.</p>
-    </div>
-    <div class="founder-name-card">
-      <div class="founder-initial">李</div>
-      <div class="founder-name-info">
-        <h4>이수진 · Alicia Yi</h4>
-        <p>前 ㈜헤리티지산후조리센터 CEO</p>
-        <p style="margin-top:4px">現 ㈜케이웰루틴 CEO &nbsp;·&nbsp; 現 ㈜뤼미에르 CEO</p>
+
+<section id="founder" style="background:var(--dark);padding:120px 80px;">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start;">
+
+    <!-- 왼쪽: 스토리 -->
+    <div>
+      <p class="section-label">Founder</p>
+      <h2 class="section-title" style="margin-bottom:48px;"><em>빛처럼,</em> 향처럼</h2>
+      <div style="border-left:2px solid var(--gold);padding-left:28px;">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(255,255,255,0.9);line-height:1.9;margin-bottom:28px;">"빛은 공간을 밝히고,<br>향은 공간을 기억하게 합니다."</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:2.2;margin-bottom:16px;">어릴 적, 산속 깊이 개울과 함께 자리한<br>작고 소박한 사찰에서 맡았던 공기의 기억은<br>시간이 지나도 희미해지지 않습니다.<br>사람들은 이것을 '향수병'이라고 부릅니다.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:2.2;margin-bottom:16px;">그리고 이 감정은 비단 한 사람만의 것이 아닙니다.<br>누군가는 파리의 공기를,<br>누군가는 교토의 골목을,<br>누군가는 뉴질랜드의 바다 냄새를 기억합니다.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:2.2;margin-bottom:16px;">여행은 결국,<br>눈으로 보는 것이 아니라<br>감각으로 남는 것이기 때문입니다.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:2.2;margin-bottom:16px;">그렇다면 당신이 머무는 공간은 어떨까요.<br>그 공간을 떠난 후에도 기억 속에 남는 향이 있을까요.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:2.2;margin-bottom:16px;">Lumière는 이 질문에서 시작되었습니다.<br>향수를 만드는 것이 아니라,<br>공간을 기억하게 만드는 방법에 대한 이야기입니다.</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold);">Lumière — 빛처럼, 향처럼.</p>
       </div>
     </div>
-  </div>
-  <!-- 오른쪽: 파운더 사진 -->
-  <div class="founder-img-wrap">
-    <img src="about.jpg" alt="Alicia Yi">
+
+    <!-- 오른쪽: 파운더 프로필 -->
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:60px;">
+      <!-- 李 한자 크게 -->
+      <div style="font-family:'Cormorant Garamond',serif;font-size:120px;color:rgba(201,168,76,0.15);line-height:1;margin-bottom:-20px;letter-spacing:-4px;">李</div>
+      <div style="border:1px solid var(--gold);padding:48px 40px;text-align:center;position:relative;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);font-weight:300;margin-bottom:4px;">이수진</p>
+        <p style="font-family:'Montserrat',sans-serif;font-size:13px;color:var(--gold);letter-spacing:3px;margin-bottom:32px;">Alicia Yi</p>
+        <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;text-align:left;">
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li style="font-size:12px;color:rgba(255,255,255,0.5);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.8;">— 특급호텔 25년 경력<br>&nbsp;&nbsp;&nbsp;(프런트 · 웨딩 · 프로모션 · 교육)</li>
+            <li style="font-size:12px;color:rgba(255,255,255,0.5);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">— 마세라티 VIP 럭셔리 키트 기획</li>
+            <li style="font-size:12px;color:rgba(255,255,255,0.5);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">— 입시학원 × 뤼미에르 집중력 공간조향</li>
+            <li style="font-size:12px;color:rgba(255,255,255,0.5);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);">— 산후조리원 공간조향 · 향기 마케팅 총괄</li>
+            <li style="font-size:12px;color:rgba(255,255,255,0.5);padding:6px 0;">— 前 ㈜헤리티지산후조리센터 CEO</li>
+          </ul>
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(201,168,76,0.3);">
+            <p style="font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;">現</p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.6);line-height:2;">㈜케이웰루틴 CEO<br>㈜뤼미에르 CEO</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -659,7 +675,7 @@ window.addEventListener('DOMContentLoaded', function(){
   <p class="section-label" style="text-align:center">Partners</p>
   <h2 class="section-title" style="text-align:center">함께한 <em>브랜드들</em></h2>
   <div class="partners-stats">
-    <div class="stat-item"><div class="stat-num" style="font-size:20px;letter-spacing:1px;">Allergy</div><div class="stat-label">Reduce</div></div>
+    <div class="stat-item"><div class="stat-num" style="font-size:clamp(28px,4vw,52px);letter-spacing:1px;line-height:1.2;">Allergy<br>Reduce</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">천연 원료</div></div>
     <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">맞춤 향 설계</div></div>
   </div>
@@ -810,16 +826,16 @@ window.addEventListener('DOMContentLoaded', function(){
   <div class="footer-col">
     <h5>Legal</h5>
     <ul>
-      <li><a href="#">이용약관</a></li>
-      <li><a href="#">개인정보처리방침</a></li>
+      <li><a href="#" onclick="openLegal('terms');return false;">이용약관</a></li>
+      <li><a href="#" onclick="openLegal('privacy');return false;">개인정보처리방침</a></li>
     </ul>
   </div>
 </footer>
 <div class="footer-bottom">
   <p>© 2025 LUMIÈRE. All rights reserved.<br>㈜케이웰루틴 · 대표: 이해주 · 사업자등록번호: 107-28-70500 · 통신판매업신고번호: 2025-경기파주-4548<br>주소: 서울시 용산구 새창로 20길 10 3층 · 070-7658-1046 · alicia@kwellroutine.com</p>
   <div class="footer-bottom-links">
-    <a href="#">이용약관</a>
-    <a href="#">개인정보처리방침</a>
+    <a href="#" onclick="openLegal('terms');return false;">이용약관</a>
+    <a href="#" onclick="openLegal('privacy');return false;">개인정보처리방침</a>
   </div>
 </div>
 
@@ -1351,13 +1367,13 @@ window.addEventListener('DOMContentLoaded', function(){
 
 
 <!-- 마이페이지 모달 -->
-<div id="mypage-overlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:4500;overflow-y:auto;font-family:'Noto Sans KR','Montserrat',sans-serif;">
+<div id="mypage-overlay" style="display:none;position:fixed;inset:0;background:#faf8f5;z-index:4500;overflow-y:auto;font-family:'Noto Sans KR','Montserrat',sans-serif;">
   <div style="max-width:1100px;margin:0 auto;padding:60px 40px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;border-bottom:1px solid #f0f0f0;padding-bottom:20px;">
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;letter-spacing:2px;color:#1a1510;">내 계정</h2>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:32px;letter-spacing:3px;color:#1a1510;font-weight:300;">내 계정</h2>
       <button onclick="closeMypage()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#999;">×</button>
     </div>
-    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;">
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:60px;">
 
       <!-- 좌측 메뉴 -->
       <div>
