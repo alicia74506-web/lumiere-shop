@@ -364,10 +364,12 @@ function doJoin() {
   closeModal('join-modal');
   updateNavForLogin(newUser);
   if (marketing) {
-    alert('가입 완료! 10% 할인 쿠폰이 발급되었습니다 🎉\n쿠폰코드: LUMIERE10');
+    issueMarketingCoupon(email, name);
+    alert('가입 완료! 마케팅 동의 10% 쿠폰이 발급되었습니다 🎉\n마이페이지 → 쿠폰에서 확인하세요!');
   } else {
     alert('가입이 완료되었습니다, ' + name + '님! 환영합니다 ✦');
   }
+  checkBirthdayCoupon(newUser);
 }
 
 function updateNavForLogin(user) {
