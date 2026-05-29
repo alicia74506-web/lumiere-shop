@@ -230,10 +230,14 @@ footer{background:var(--darker);padding:60px;display:grid;grid-template-columns:
 .footer-bottom-links{display:flex;gap:20px}
 .footer-bottom-links a{font-size:11px;color:rgba(255,255,255,0.25);text-decoration:none}
 
-/* KAKAO FLOAT */
-.kakao-float{position:fixed;bottom:30px;right:30px;z-index:999;background:#FEE500;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:transform 0.3s}
-.kakao-float:hover{transform:scale(1.1)}
-.kakao-float svg{width:28px;height:28px}
+/* AI CHAT */
+.ai-msg-bot{background:#fff;border:1px solid #f0ede8;border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:13px;color:#333;line-height:1.6;max-width:85%;align-self:flex-start;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.ai-msg-user{background:#1a1510;color:#fff;border-radius:12px 12px 2px 12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:85%;align-self:flex-end;}
+.ai-msg-typing{background:#fff;border:1px solid #f0ede8;border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:13px;color:#999;align-self:flex-start;}
+#ai-messages{display:flex;flex-direction:column;}
+
+.ai-float{position:fixed;bottom:30px;right:30px;z-index:999;background:#1a1510;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:transform 0.3s;border:none;}
+.ai-float:hover{transform:scale(1.1);background:#2a2010;}
 
 @media(max-width:768px){
   nav{padding:16px 20px}
@@ -655,12 +659,12 @@ window.addEventListener('DOMContentLoaded', function(){
     <blockquote class="contact-quote">"한 번의 판매가 아니라<br>오래 남는 신뢰를 만들겠습니다."<br>— Alicia Yi, CEO</blockquote>
   </div>
   <div class="contact-form">
-    <div class="form-group"><label>Company</label><input type="text" placeholder="회사명"></div>
-    <div class="form-group"><label>Name *</label><input type="text" placeholder="성함"></div>
-    <div class="form-group"><label>Email *</label><input type="email" placeholder="이메일"></div>
-    <div class="form-group"><label>Phone</label><input type="tel" placeholder="연락처"></div>
+    <div class="form-group"><label>Company</label><input id="cf-company" type="text" placeholder="회사명"></div>
+    <div class="form-group"><label>Name *</label><input id="cf-name" type="text" placeholder="성함"></div>
+    <div class="form-group"><label>Email *</label><input id="cf-email" type="email" placeholder="이메일"></div>
+    <div class="form-group"><label>Phone</label><input id="cf-phone" type="tel" placeholder="연락처"></div>
     <div class="form-group"><label>Service</label>
-      <select>
+      <select id="cf-service">
         <option>문의 서비스를 선택해주세요</option>
         <option>Space Scenting / 공간 조향</option>
         <option>Personal Perfume / 퍼스널 향수</option>
@@ -671,8 +675,9 @@ window.addEventListener('DOMContentLoaded', function(){
         <option>기타 문의</option>
       </select>
     </div>
-    <div class="form-group"><label>Message *</label><textarea placeholder="문의 내용을 입력해주세요"></textarea></div>
-    <button class="form-submit">문의 보내기</button>
+    <div class="form-group"><label>Message *</label><textarea id="cf-message" placeholder="문의 내용을 입력해주세요"></textarea></div>
+    <p id="cf-result" style="font-size:13px;margin-bottom:12px;text-align:center;min-height:18px;"></p>
+    <button class="form-submit" onclick="submitContact()">문의 보내기</button>
   </div>
 </section>
 
@@ -1433,10 +1438,40 @@ window.addEventListener('DOMContentLoaded', function(){
   </div>
 </div>
 
-<!-- KAKAO FLOAT -->
-<a href="http://pf.kakao.com/_dfBbX/chat" class="kakao-float" target="_blank">
-  <svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.536 1.444 4.772 3.64 6.152L4.5 21l4.63-2.407A11.27 11.27 0 0012 18c5.523 0 10-3.477 10-7.5S17.523 3 12 3z"/></svg>
-</a>
+<!-- AI CHAT -->
+<button class="ai-float" onclick="toggleAiChat()" title="AI 상담">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    <circle cx="9" cy="10" r="1" fill="#c9a84c" stroke="none"/>
+    <circle cx="12" cy="10" r="1" fill="#c9a84c" stroke="none"/>
+    <circle cx="15" cy="10" r="1" fill="#c9a84c" stroke="none"/>
+  </svg>
+</button>
+
+<!-- AI 채팅창 -->
+<div id="ai-chat-panel" style="display:none;position:fixed;bottom:100px;right:30px;width:360px;max-width:95vw;height:520px;background:#fff;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.2);z-index:998;flex-direction:column;overflow:hidden;">
+  <!-- 헤더 -->
+  <div style="background:#1a1510;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <p style="color:#c9a84c;font-size:11px;letter-spacing:2px;margin-bottom:2px;">LUMIÈRE</p>
+      <p style="color:#fff;font-size:14px;font-weight:500;">AI 향기 상담사</p>
+    </div>
+    <button onclick="toggleAiChat()" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;">×</button>
+  </div>
+  <!-- 메시지 영역 -->
+  <div id="ai-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#faf8f5;">
+    <div class="ai-msg-bot">
+      안녕하세요! 뤼미에르 AI 상담사입니다 ✦<br>제품 추천, 주문 문의, B2B 상담 무엇이든 편하게 물어보세요 😊
+    </div>
+  </div>
+  <!-- 입력창 -->
+  <div style="padding:12px 16px;border-top:1px solid #f0ede8;display:flex;gap:8px;background:#fff;">
+    <input id="ai-input" placeholder="메시지를 입력하세요..." style="flex:1;padding:10px 14px;border:1px solid #e0d4b8;border-radius:20px;font-size:13px;outline:none;font-family:'Noto Sans KR',sans-serif;" onkeypress="if(event.key==='Enter')sendAiMsg()">
+    <button onclick="sendAiMsg()" style="background:#1a1510;color:#c9a84c;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
 
 <script>
 // CART
@@ -2404,6 +2439,19 @@ function submitOrder() {
     var cIdx = coupons.findIndex(function(c){ return c.code === appliedCoupon.code; });
     if (cIdx > -1) { coupons[cIdx].used = (coupons[cIdx].used||0) + 1; saveCoupons(coupons); }
   }
+
+  // 주문 이메일 발송
+  sendOrderEmail({
+    order_num: orderNum,
+    customer_name: name,
+    customer_phone: phone,
+    customer_email: email,
+    address: postcode + ' ' + address + ' ' + addressDetail,
+    memo: memo || '-',
+    product_name: cart.map(function(i){ return i.name + ' x' + i.qty; }).join(', '),
+    amount: '₩' + totals.total.toLocaleString(),
+    to_email: 'alicia@kwellroutine.com'
+  });
 
   // 장바구니 비우기
   cart = [];
