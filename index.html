@@ -262,6 +262,56 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 function showJoin() { closeModal('login-modal'); openModal('join-modal'); }
 function showLogin() { closeModal('join-modal'); openModal('login-modal'); }
 
+function showFindEmail() {
+  closeModal('login-modal');
+  var m = document.getElementById('find-email-modal');
+  if (m) m.style.display = 'flex';
+  var r = document.getElementById('fe-result'); if(r) r.style.display='none';
+  var e = document.getElementById('fe-error'); if(e) e.textContent='';
+  var n = document.getElementById('fe-name'); if(n) n.value='';
+  var p = document.getElementById('fe-phone'); if(p) p.value='';
+}
+function showFindPw() {
+  closeModal('login-modal');
+  var m = document.getElementById('find-pw-modal');
+  if (m) m.style.display = 'flex';
+  var s1 = document.getElementById('fpw-step1'); if(s1) s1.style.display='block';
+  var s2 = document.getElementById('fpw-step2'); if(s2) s2.style.display='none';
+  var e = document.getElementById('fpw-error'); if(e) e.textContent='';
+  var em = document.getElementById('fpw-email'); if(em) em.value='';
+  var p = document.getElementById('fpw-phone'); if(p) p.value='';
+}
+function doFindEmail() {
+  var name = (document.getElementById('fe-name')||{value:''}).value.trim();
+  var phone = (document.getElementById('fe-phone')||{value:''}).value.trim().replace(/-/g,'');
+  var err = document.getElementById('fe-error');
+  err.textContent = '';
+  if (!name || !phone) { err.textContent = '성함과 휴대폰 번호를 모두 입력해주세요.'; return; }
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var found = users.find(function(u){ return u.name === name && u.phone && u.phone.replace(/-/g,'') === phone; });
+  if (!found) { err.textContent = '입력하신 정보와 일치하는 계정이 없습니다.'; return; }
+  var r = document.getElementById('fe-result'); if(r) r.style.display='block';
+  var re = document.getElementById('fe-result-email'); if(re) re.textContent=found.email;
+}
+function doFindPw() {
+  var email = (document.getElementById('fpw-email')||{value:''}).value.trim();
+  var phone = (document.getElementById('fpw-phone')||{value:''}).value.trim().replace(/-/g,'');
+  var err = document.getElementById('fpw-error');
+  err.textContent = '';
+  if (!email || !phone) { err.textContent = '이메일과 휴대폰 번호를 모두 입력해주세요.'; return; }
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var idx = users.findIndex(function(u){ return u.email === email && u.phone && u.phone.replace(/-/g,'') === phone; });
+  if (idx < 0) { err.textContent = '입력하신 정보와 일치하는 계정이 없습니다.'; return; }
+  var chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#';
+  var temp = '';
+  for (var i = 0; i < 8; i++) temp += chars[Math.floor(Math.random() * chars.length)];
+  users[idx].pw = temp;
+  localStorage.setItem('lumiere_users', JSON.stringify(users));
+  var t = document.getElementById('fpw-temp'); if(t) t.textContent=temp;
+  var s1 = document.getElementById('fpw-step1'); if(s1) s1.style.display='none';
+  var s2 = document.getElementById('fpw-step2'); if(s2) s2.style.display='block';
+}
+
 function doLogin() {
   var email = document.getElementById('login-email').value.trim();
   var pw = document.getElementById('login-pw').value;
