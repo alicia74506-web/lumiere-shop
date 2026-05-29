@@ -633,7 +633,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <!-- 왼쪽: 스토리 -->
     <div style="padding:100px 70px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,0.06);">
       <p class="section-label">Founder</p>
-      <h2 class="section-title" style="margin-bottom:40px;"><em>빛처럼,</em> 향처럼</h2>
+      <h2 class="section-title" style="margin-bottom:40px;font-size:clamp(28px,3vw,48px);"><em>빛처럼,</em> 향처럼</h2>
       <div style="border-left:2px solid var(--gold);padding-left:24px;">
         <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(255,255,255,0.85);line-height:1.9;margin-bottom:28px;">"빛은 공간을 밝히고,<br>향은 공간을 기억하게 합니다."</p>
         <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:2.4;margin-bottom:0;">어릴 적, 산속 깊이 개울과 함께 자리한<br>작고 소박한 사찰에서 맡았던 공기의 기억은<br>시간이 지나도 희미해지지 않습니다.<br>사람들은 이것을 '향수병'이라고 부릅니다.<br><br>그리고 이 감정은 비단 한 사람만의 것이 아닙니다.<br>누군가는 파리의 공기를,<br>누군가는 교토의 골목을,<br>누군가는 뉴질랜드의 바다 냄새를 기억합니다.<br><br>여행은 결국,<br>눈으로 보는 것이 아니라<br>감각으로 남는 것이기 때문입니다.<br><br>그렇다면 당신이 머무는 공간은 어떨까요.<br>그 공간을 떠난 후에도 기억 속에 남는 향이 있을까요.<br><br>Lumière는 이 질문에서 시작되었습니다.<br>향수를 만드는 것이 아니라,<br>공간을 기억하게 만드는 방법에 대한 이야기입니다.</p>
@@ -670,7 +670,7 @@ window.addEventListener('DOMContentLoaded', function(){
   <p class="section-label" style="text-align:center">Partners</p>
   <h2 class="section-title" style="text-align:center">함께한 <em>브랜드들</em></h2>
   <div class="partners-stats">
-    <div class="stat-item"><div class="stat-num">Allergy<br><span style="font-size:0.7em;">Reduce</span></div><div class="stat-label">알레르기 저감</div></div>
+    <div class="stat-item"><div class="stat-num" style="font-size:clamp(32px,3.5vw,52px);">Allergy<br>Reduce</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">천연 원료</div></div>
     <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">맞춤 향 설계</div></div>
   </div>
@@ -1378,7 +1378,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <button onclick="closeMypage()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;">×</button>
   </div>
   <div style="max-width:1100px;margin:0 auto;padding:48px 48px;">
-    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;">
+    <div style="display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:start;">
       <!-- 좌측 메뉴 -->
       <div style="position:sticky;top:80px;height:fit-content;">
         <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
@@ -3020,5 +3020,14 @@ function searchSecAddress() {
 // ===== END LEGAL =====
 
 </script>
+
+<!-- LEGAL 모달 -->
+<div id="legal-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:6000;align-items:center;justify-content:center;">
+  <div style="background:#fff;width:680px;max-width:95vw;max-height:85vh;overflow-y:auto;border-radius:8px;padding:48px;position:relative;">
+    <button onclick="closeLegal()" style="position:absolute;top:20px;right:24px;background:none;border:none;font-size:24px;cursor:pointer;color:#999;">×</button>
+    <div id="legal-content"></div>
+  </div>
+</div>
+
 </body>
 </html>
