@@ -365,11 +365,9 @@ function doJoin() {
   updateNavForLogin(newUser);
   if (marketing) {
     issueMarketingCoupon(email, name);
-    alert('가입 완료! 마케팅 동의 10% 쿠폰이 발급되었습니다 🎉\n마이페이지 → 쿠폰에서 확인하세요!');
-  } else {
-    alert('가입이 완료되었습니다, ' + name + '님! 환영합니다 ✦');
   }
   checkBirthdayCoupon(newUser);
+  showWelcome(name, marketing);
 }
 
 function updateNavForLogin(user) {
