@@ -410,7 +410,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#hero" class="nav-logo">Lumière</a>
+  <a href="#hero" class="nav-logo" style="color:var(--gold);">Lumière</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
@@ -628,12 +628,12 @@ window.addEventListener('DOMContentLoaded', function(){
 <!-- FOUNDER -->
 
 <section id="founder" style="background:var(--dark);">
-  <div style="display:grid;grid-template-columns:1fr 1fr;min-height:700px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;min-height:700px;align-items:stretch;">
 
     <!-- 왼쪽: 스토리 -->
     <div style="padding:100px 70px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,0.06);">
       <p class="section-label">Founder</p>
-      <h2 class="section-title" style="margin-bottom:40px;font-size:clamp(28px,3vw,48px);"><em>빛처럼,</em> 향처럼</h2>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--white);font-weight:300;margin-bottom:40px;letter-spacing:1px;font-style:italic;"><em style="color:var(--gold);">빛처럼,</em> 향처럼</h2>
       <div style="border-left:2px solid var(--gold);padding-left:24px;">
         <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(255,255,255,0.85);line-height:1.9;margin-bottom:28px;">"빛은 공간을 밝히고,<br>향은 공간을 기억하게 합니다."</p>
         <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:2.4;margin-bottom:0;">어릴 적, 산속 깊이 개울과 함께 자리한<br>작고 소박한 사찰에서 맡았던 공기의 기억은<br>시간이 지나도 희미해지지 않습니다.<br>사람들은 이것을 '향수병'이라고 부릅니다.<br><br>그리고 이 감정은 비단 한 사람만의 것이 아닙니다.<br>누군가는 파리의 공기를,<br>누군가는 교토의 골목을,<br>누군가는 뉴질랜드의 바다 냄새를 기억합니다.<br><br>여행은 결국,<br>눈으로 보는 것이 아니라<br>감각으로 남는 것이기 때문입니다.<br><br>그렇다면 당신이 머무는 공간은 어떨까요.<br>그 공간을 떠난 후에도 기억 속에 남는 향이 있을까요.<br><br>Lumière는 이 질문에서 시작되었습니다.<br>향수를 만드는 것이 아니라,<br>공간을 기억하게 만드는 방법에 대한 이야기입니다.</p>
@@ -670,7 +670,7 @@ window.addEventListener('DOMContentLoaded', function(){
   <p class="section-label" style="text-align:center">Partners</p>
   <h2 class="section-title" style="text-align:center">함께한 <em>브랜드들</em></h2>
   <div class="partners-stats">
-    <div class="stat-item"><div class="stat-num" style="font-size:clamp(32px,3.5vw,52px);">Allergy<br>Reduce</div></div>
+    <div class="stat-item"><div class="stat-num">Allergy<br>Reduce</div><div class="stat-label">알러지 저감 원료</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">천연 원료</div></div>
     <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">맞춤 향 설계</div></div>
   </div>
@@ -838,8 +838,7 @@ window.addEventListener('DOMContentLoaded', function(){
 <div class="footer-bottom">
   <p>© 2025 LUMIÈRE. All rights reserved.<br>㈜케이웰루틴 · 대표: 이해주 · 사업자등록번호: 107-28-70500 · 통신판매업신고번호: 2025-경기파주-4548<br>주소: 서울시 용산구 새창로 20길 10 3층 · 070-7658-1046 · alicia@kwellroutine.com</p>
   <div class="footer-bottom-links">
-    <a href="#" onclick="openLegal('terms');return false;">이용약관</a>
-    <a href="#" onclick="openLegal('privacy');return false;">개인정보처리방침</a>
+
   </div>
 </div>
 
@@ -940,11 +939,61 @@ window.addEventListener('DOMContentLoaded', function(){
       <input id="join-address-detail" type="text" placeholder="상세 주소 (동, 호수 등)" style="width:100%;padding:10px 14px;border:1px solid #e0e0e0;border-radius:6px;font-size:13px;outline:none;">
     </div>
     <div style="border-top:1px solid #f0f0f0;padding-top:16px;margin-bottom:16px;">
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:14px;cursor:pointer;font-weight:600;background:#f8f4ee;padding:10px 12px;border-radius:6px;border:1px solid #e0c98a;"><input type="checkbox" id="join-all" onchange="toggleAllAgree(this)"> ✦ 전체 동의 (필수 + 선택 포함)</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-terms" onchange="syncAllAgree()"> (필수) 이용약관 동의</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-privacy" onchange="syncAllAgree()"> (필수) 개인정보 수집 및 이용 동의</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="join-age" onchange="syncAllAgree()"> (필수) 만 14세 이상입니다</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;"><input type="checkbox" id="join-marketing" onchange="syncAllAgree()"> (선택) 마케팅 정보 수신 동의 — 동의 시 10% 쿠폰 즉시 발급 🎁</label>
+      <!-- 전체 동의 -->
+      <div style="margin-bottom:14px;">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+          <input type="checkbox" id="join-all" onchange="toggleAllAgree(this)" style="margin-top:2px;"> 
+          <span>
+            <strong>전체 동의 (선택포함)</strong><br>
+            <span style="color:#999;font-size:11px;line-height:1.6;">고객님의 편의를 위하여 전체동의 기능을 제공하고 있습니다.<br>전체동의 하시겠습니까?</span>
+          </span>
+        </label>
+      </div>
+      <div style="border-top:1px solid #f5f5f5;padding-top:12px;">
+        <!-- 이용약관 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+            <input type="checkbox" id="join-terms" onchange="syncAllAgree()"> 이용약관 동의
+          </label>
+          <a href="#" onclick="openLegal('terms');return false;" style="font-size:11px;color:#999;text-decoration:underline;white-space:nowrap;">자세히 보기</a>
+        </div>
+        <!-- 개인정보 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+            <input type="checkbox" id="join-privacy" onchange="syncAllAgree()"> 개인정보 수집 및 이용 동의
+          </label>
+          <a href="#" onclick="openLegal('privacy');return false;" style="font-size:11px;color:#999;text-decoration:underline;white-space:nowrap;">자세히 보기</a>
+        </div>
+        <!-- 14세 -->
+        <div style="margin-bottom:10px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+            <input type="checkbox" id="join-age" onchange="syncAllAgree()"> (필수) 만 14세 이상입니다.
+          </label>
+        </div>
+        <!-- 마케팅 홍보성 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+            <input type="checkbox" id="join-marketing-all" onchange="toggleMarketingAll(this)"> (선택) 마케팅 및 홍보성 정보 수신에 동의합니다.
+          </label>
+          <a href="#" onclick="openLegal('marketing');return false;" style="font-size:11px;color:#999;text-decoration:underline;white-space:nowrap;">자세히 보기</a>
+        </div>
+        <!-- 마케팅 정보 수신 -->
+        <div style="margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;cursor:pointer;">
+            <input type="checkbox" id="join-marketing" onchange="syncAllAgree();syncMarketing();"> (선택) 마케팅 정보 수신에 동의합니다.
+          </label>
+        </div>
+        <!-- 이메일/SMS -->
+        <div style="padding-left:24px;margin-bottom:10px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555;cursor:pointer;margin-bottom:6px;">
+            <input type="checkbox" id="join-email-agree" onchange="syncMarketing()"> 이메일 수신 동의
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555;cursor:pointer;">
+            <input type="checkbox" id="join-sms-agree" onchange="syncMarketing()"> SMS 수신 동의
+          </label>
+        </div>
+        <p style="font-size:11px;color:#999;line-height:1.7;margin-top:8px;">* 마케팅 수신 및 홍보 목적의 개인정보 수집 및 이용에 미동의 시, 마케팅 목적의 소식 및 특별 혜택 정보를 받아 보실 수 없습니다.</p>
+      </div>
     </div>
     <p id="join-error" style="color:#e53935;font-size:12px;margin-bottom:12px;text-align:center;min-height:16px;"></p>
     <button onclick="doJoin()" style="width:100%;padding:12px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-bottom:14px;">회원 가입</button>
@@ -1378,7 +1427,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <button onclick="closeMypage()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;">×</button>
   </div>
   <div style="max-width:1100px;margin:0 auto;padding:48px 48px;">
-    <div style="display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:start;">
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start;min-height:600px;">
       <!-- 좌측 메뉴 -->
       <div style="position:sticky;top:80px;height:fit-content;">
         <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
@@ -1647,17 +1696,33 @@ function removeFromCart(idx) {
 
 window.addEventListener('DOMContentLoaded', function(){ updateCartCount(); });
 
+
+function toggleMarketingAll(el) {
+  var checked = el.checked;
+  ['join-marketing','join-email-agree','join-sms-agree'].forEach(function(id){
+    var el2 = document.getElementById(id); if(el2) el2.checked = checked;
+  });
+  syncAllAgree();
+}
+function syncMarketing() {
+  var m = document.getElementById('join-marketing');
+  var em = document.getElementById('join-email-agree');
+  var sms = document.getElementById('join-sms-agree');
+  var all = document.getElementById('join-marketing-all');
+  if(all && m && em && sms) all.checked = m.checked && em.checked && sms.checked;
+  syncAllAgree();
+}
+
 function toggleAllAgree(el) {
   var checked = el.checked;
-  ['join-terms','join-privacy','join-age','join-marketing'].forEach(function(id){
-    document.getElementById(id).checked = checked;
+  ['join-terms','join-privacy','join-age','join-marketing-all','join-marketing','join-email-agree','join-sms-agree'].forEach(function(id){
+    var el2=document.getElementById(id); if(el2) el2.checked = checked;
   });
 }
 function syncAllAgree() {
-  var all = ['join-terms','join-privacy','join-age','join-marketing'].every(function(id){
-    return document.getElementById(id).checked;
-  });
-  document.getElementById('join-all').checked = all;
+  var ids = ['join-terms','join-privacy','join-age','join-marketing'];
+  var all = ids.every(function(id){ var el=document.getElementById(id); return el && el.checked; });
+  var allEl = document.getElementById('join-all'); if(allEl) allEl.checked = all;
 }
 function toggleAllAgree2(el) {
   var chks = document.querySelectorAll('.sec-chk');
@@ -2997,10 +3062,15 @@ var TERMS_HTML = '<h2 style="font-family:Cormorant Garamond,serif;font-size:26px
 
 var PRIVACY_HTML = '<h2 style="font-family:Cormorant Garamond,serif;font-size:26px;color:#1a1510;margin-bottom:8px;">개인정보처리방침</h2><p style="font-size:11px;color:#999;margin-bottom:32px;">시행일: 2025년 1월 1일</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">1. 수집하는 개인정보 항목</h3><p style="font-size:13px;color:#555;line-height:2;"><strong>필수:</strong> 성명, 이메일, 비밀번호, 휴대폰 번호<br><strong>선택:</strong> 주소, 생년월일<br><strong>자동수집:</strong> 서비스 이용 기록, 접속 로그</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">2. 개인정보 수집 및 이용 목적</h3><p style="font-size:13px;color:#555;line-height:2;">① 회원 가입 및 서비스 제공<br>② 주문·결제·배송 처리<br>③ 고객 상담 및 불만 처리<br>④ 마케팅 및 광고 활용 (동의한 경우에 한함)<br>⑤ 생일 쿠폰 등 혜택 제공</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">3. 개인정보 보유 및 이용 기간</h3><p style="font-size:13px;color:#555;line-height:2;">① 회원 탈퇴 시까지<br>② 전자상거래 기록: 5년<br>③ 소비자 불만 처리 기록: 3년</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">4. 개인정보 제3자 제공</h3><p style="font-size:13px;color:#555;line-height:2;">원칙적으로 외부 제공 없음. 단, 배송을 위해 CJ대한통운에 배송 정보 제공.</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">5. 이용자의 권리</h3><p style="font-size:13px;color:#555;line-height:2;">마이페이지에서 직접 수정 또는 alicia@kwellroutine.com으로 요청 가능합니다.</p><h3 style="font-size:15px;color:#1a1510;margin:24px 0 10px;">6. 개인정보 보호책임자</h3><p style="font-size:13px;color:#555;line-height:2;">성명: 이수진<br>이메일: alicia@kwellroutine.com<br>전화: 070-7658-1046</p><p style="font-size:12px;color:#aaa;margin-top:32px;padding-top:20px;border-top:1px solid #f0f0f0;">㈜케이웰루틴 | 브랜드: 뤼미에르 | 대표: 이수진</p>';
 
+var MARKETING_HTML = '<h2 style="font-size:20px;color:#1a1510;margin-bottom:20px;">마케팅 정보 수신 동의</h2>\n<h3 style="font-size:14px;color:#1a1510;margin:20px 0 8px;">1. 개인정보 수집 목적 및 이용목적</h3>\n<p style="font-size:13px;color:#555;line-height:2;">SMS, DM, 이메일 등 전자적 전송 매체를 통한 뤼미에르 브랜드의 개인 맞춤형 광고 전송, 관심사 기반 맞춤형 광고 게재, 이벤트 및 프로모션 관련 정보 안내, 신규 서비스(제품)개발 및 특화, 접속 또는 방문 빈도 파악 또는 회원의 서비스 이용에 대한 통계</p>\n<h3 style="font-size:14px;color:#1a1510;margin:20px 0 8px;">2. 수집하는 개인정보 항목</h3>\n<p style="font-size:13px;color:#555;line-height:2;">• (회원정보) 이름, 휴대폰 번호, 이메일 주소, 생년월일<br>• (서비스 이용정보) 쿠키에 의한 자동수집 정보</p>\n<h3 style="font-size:14px;color:#1a1510;margin:20px 0 8px;">3. 개인정보의 보유기간 및 이용기간</h3>\n<p style="font-size:13px;color:#555;line-height:2;">(i) 동의철회 시 또는 (ii) 회원탈퇴 시 지체없이 파기</p>\n<h3 style="font-size:14px;color:#1a1510;margin:20px 0 8px;">수신 동의 철회</h3>\n<p style="font-size:13px;color:#555;line-height:2;">마케팅 정보 수신동의는 고객센터(070-7658-1046, alicia@kwellroutine.com)를 통해 언제든지 변경(동의/철회)할 수 있습니다.</p>\n<p style="font-size:12px;color:#999;line-height:1.8;margin-top:16px;">※ 귀하는 상기와 같은 개인정보의 수집 및 이용에 대해 동의를 거부할 권리가 있습니다. 다만, 동의를 거부하는 경우 신제품 소식 및 이벤트 행사 내용과 관련된 정보를 더 이상 제공받으실 수 없습니다.</p>\n<p style="font-size:12px;color:#aaa;margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0;">㈜케이웰루틴 | 브랜드: 뤼미에르 | alicia@kwellroutine.com</p>';
 function openLegal(type) {
   var el = document.getElementById('legal-content');
   var modal = document.getElementById('legal-modal');
-  if (el) el.innerHTML = type === 'terms' ? TERMS_HTML : PRIVACY_HTML;
+  if (el) {
+    if (type === 'terms') el.innerHTML = TERMS_HTML;
+    else if (type === 'privacy') el.innerHTML = PRIVACY_HTML;
+    else el.innerHTML = MARKETING_HTML;
+  }
   if (modal) modal.style.display = 'flex';
 }
 function closeLegal() {
