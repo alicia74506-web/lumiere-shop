@@ -1325,15 +1325,13 @@ window.addEventListener('DOMContentLoaded', function(){
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div>
-              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 * (직접 입력 가능)</label>
-              <input id="pf-cat" class="ainput" style="background:#faf8f4;" placeholder="카테고리 입력 또는 선택" list="pf-cat-list">
-              <datalist id="pf-cat-list">
-                <option>자동차 방향제</option>
-                <option>디퓨저</option>
-                <option>향수</option>
-                <option>룸스프레이</option>
-                <option>소취제</option>
-              </datalist>
+              <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 *</label>
+              <select id="pf-cat" class="ainput" style="background:#faf8f4;"></select>
+              <div style="display:flex;gap:6px;margin-top:6px;">
+                <input id="pf-cat-new" placeholder="새 카테고리 입력" style="flex:1;padding:6px 10px;font-size:11px;border:0.5px solid #d4c4a0;border-radius:5px;background:#faf8f4;outline:none;font-family:inherit;">
+                <button type="button" onclick="addCategory()" style="padding:6px 12px;font-size:11px;background:#1a1510;color:#c9a84c;border:none;border-radius:5px;cursor:pointer;white-space:nowrap;">+ 추가</button>
+              </div>
+              <div id="pf-cat-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;"></div>
             </div>
             <div>
               <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">상태 배지</label>
@@ -1921,6 +1919,59 @@ function adminTab(tab) {
   if (tab === 'banner') renderBanner();
 }
 
+
+// ===== 카테고리 관리 =====
+var customCategories = JSON.parse(localStorage.getItem('lumiere_categories') || '[]');
+var defaultCategories = ['자동차 방향제','디퓨저','향수','룸스프레이','소취제','리필용액','쇼핑백','Gift'];
+
+function getAllCategories() {
+  var all = defaultCategories.slice();
+  customCategories.forEach(function(c){ if(all.indexOf(c) === -1) all.push(c); });
+  return all;
+}
+
+function renderCategorySelect(selected) {
+  var sel = document.getElementById('pf-cat');
+  if (!sel) return;
+  sel.innerHTML = '';
+  getAllCategories().forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    if (c === selected) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  renderCategoryTags();
+}
+
+function renderCategoryTags() {
+  var wrap = document.getElementById('pf-cat-tags');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  customCategories.forEach(function(c, i) {
+    var tag = document.createElement('span');
+    tag.style.cssText = 'display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#f0ead8;border:0.5px solid #d4c4a0;border-radius:4px;font-size:11px;color:#5a4a2a;';
+    tag.innerHTML = c + '<span onclick="removeCategory(' + i + ')" style="cursor:pointer;color:#c9a84c;font-size:13px;line-height:1;">×</span>';
+    wrap.appendChild(tag);
+  });
+}
+
+function addCategory() {
+  var inp = document.getElementById('pf-cat-new');
+  var val = inp.value.trim();
+  if (!val) return;
+  if (getAllCategories().indexOf(val) > -1) { inp.value=''; return; }
+  customCategories.push(val);
+  localStorage.setItem('lumiere_categories', JSON.stringify(customCategories));
+  inp.value = '';
+  renderCategorySelect(val);
+}
+
+function removeCategory(idx) {
+  customCategories.splice(idx, 1);
+  localStorage.setItem('lumiere_categories', JSON.stringify(customCategories));
+  renderCategorySelect('');
+}
+
 // --- 상품 ---
 function getProducts() { return JSON.parse(localStorage.getItem('lumiere_products') || '[]'); }
 function saveProducts(p) { localStorage.setItem('lumiere_products', JSON.stringify(p)); }
@@ -1937,7 +1988,7 @@ function openProductForm(id) {
     var p = getProducts().find(function(x){ return x.id === id; });
     if (p) {
       document.getElementById('pf-name').value = p.name;
-      document.getElementById('pf-cat').value = p.category;
+      renderCategorySelect(p.category);
       document.getElementById('pf-price').value = p.price;
       document.getElementById('pf-cost').value = p.cost;
       document.getElementById('pf-stock').value = p.stock;
@@ -1957,6 +2008,7 @@ function openProductForm(id) {
     }
   } else {
     ['pf-name','pf-price','pf-cost','pf-stock','pf-imgurl','pf-status','pf-desc','pf-detail-urls'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    renderCategorySelect('');
     var dp=document.getElementById('pf-detail-previews'); if(dp) dp.innerHTML='';
     var tp=document.getElementById('pf-thumb-preview'); if(tp) tp.innerHTML='<span style="font-size:10px;color:#bbb;text-align:center;padding:4px;">미리보기</span>';
     var prog=document.getElementById('pf-thumb-progress'); if(prog) prog.style.display='none';
