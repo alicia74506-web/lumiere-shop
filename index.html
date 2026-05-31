@@ -428,6 +428,90 @@ window.addEventListener('DOMContentLoaded', function(){
 }
 .atab.active i { opacity: 1; }
 </style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBFL4RLpzNakCpuH-zou4G5qjCfcUmpUxw",
+  authDomain: "lumiere-admin.firebaseapp.com",
+  projectId: "lumiere-admin",
+  storageBucket: "lumiere-admin.firebasestorage.app",
+  messagingSenderId: "582718642120",
+  appId: "1:582718642120:web:a2f2557aefd6c45fb192fd",
+  measurementId: "G-QJPX8QN76T"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window._db = db;
+window._fbCol = collection;
+window._fbGetDocs = getDocs;
+window._fbAddDoc = addDoc;
+window._fbDeleteDoc = deleteDoc;
+window._fbDoc = doc;
+window._fbSetDoc = setDoc;
+window._fbOnSnapshot = onSnapshot;
+
+// 카테고리 Firebase 연동
+window.loadCategoriesFromFirebase = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'categories'));
+    var fbCats = [];
+    snap.forEach(function(d){ fbCats.push(d.data().name); });
+    // localStorage랑 병합
+    var local = JSON.parse(localStorage.getItem('lumiere_categories') || '[]');
+    fbCats.forEach(function(c){ if(local.indexOf(c)===-1) local.push(c); });
+    window.customCategories = local;
+    localStorage.setItem('lumiere_categories', JSON.stringify(local));
+  } catch(e){ console.log('Firebase 카테고리 로드 실패:', e); }
+};
+
+window.saveCategoryToFirebase = async function(name) {
+  try {
+    await setDoc(doc(db, 'categories', name), { name: name });
+  } catch(e){ console.log('Firebase 카테고리 저장 실패:', e); }
+};
+
+window.deleteCategoryFromFirebase = async function(name) {
+  try {
+    await deleteDoc(doc(db, 'categories', name));
+  } catch(e){ console.log('Firebase 카테고리 삭제 실패:', e); }
+};
+
+// 상품 Firebase 연동
+window.loadProductsFromFirebase = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    var fbProds = [];
+    snap.forEach(function(d){ fbProds.push(Object.assign({id: d.id}, d.data())); });
+    if (fbProds.length > 0) {
+      localStorage.setItem('lumiere_products', JSON.stringify(fbProds));
+    }
+  } catch(e){ console.log('Firebase 상품 로드 실패:', e); }
+};
+
+window.saveProductToFirebase = async function(product) {
+  try {
+    var id = product.id || String(Date.now());
+    await setDoc(doc(db, 'products', id), product);
+  } catch(e){ console.log('Firebase 상품 저장 실패:', e); }
+};
+
+window.deleteProductFromFirebase = async function(id) {
+  try {
+    await deleteDoc(doc(db, 'products', id));
+  } catch(e){ console.log('Firebase 상품 삭제 실패:', e); }
+};
+
+// 페이지 로드시 Firebase 데이터 가져오기
+document.addEventListener('DOMContentLoaded', async function(){
+  await window.loadCategoriesFromFirebase();
+  await window.loadProductsFromFirebase();
+  if (typeof renderShop === 'function') renderShop();
+});
+</script>
 </head>
 <body>
 
@@ -1326,15 +1410,9 @@ window.addEventListener('DOMContentLoaded', function(){
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div>
               <label style="font-size:11px;color:#9a8a6a;display:block;margin-bottom:5px;">카테고리 *</label>
-              <div style="position:relative;">
-                <div id="pf-cat-display" onclick="toggleCatDropdown()" style="padding:8px 12px;border:0.5px solid #d4c4a0;border-radius:6px;background:#faf8f4;cursor:pointer;font-size:13px;color:#1a1510;display:flex;justify-content:space-between;align-items:center;">
-                  <span id="pf-cat-label">카테고리 선택</span><span style="color:#9a8a6a;">▾</span>
-                </div>
-                <input type="hidden" id="pf-cat" value="">
-                <div id="pf-cat-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:0.5px solid #d4c4a0;border-radius:6px;z-index:100;max-height:180px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.08);" id="pf-cat-dropdown"></div>
-              </div>
+              <select id="pf-cat" class="ainput" style="background:#faf8f4;"></select>
               <div style="display:flex;gap:6px;margin-top:6px;">
-                <input id="pf-cat-new" placeholder="새 카테고리 직접 추가" style="flex:1;padding:6px 10px;font-size:11px;border:0.5px solid #d4c4a0;border-radius:5px;background:#faf8f4;outline:none;font-family:inherit;">
+                <input id="pf-cat-new" placeholder="새 카테고리 입력" style="flex:1;padding:6px 10px;font-size:11px;border:0.5px solid #d4c4a0;border-radius:5px;background:#faf8f4;outline:none;font-family:inherit;">
                 <button type="button" onclick="addCategory()" style="padding:6px 12px;font-size:11px;background:#1a1510;color:#c9a84c;border:none;border-radius:5px;cursor:pointer;white-space:nowrap;">+ 추가</button>
               </div>
               <div id="pf-cat-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;"></div>
@@ -1936,51 +2014,18 @@ function getAllCategories() {
   return all;
 }
 
-function toggleCatDropdown() {
-  var dd = document.getElementById('pf-cat-dropdown');
-  if (!dd) return;
-  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-}
-
-function selectCategory(val) {
-  document.getElementById('pf-cat').value = val;
-  document.getElementById('pf-cat-label').textContent = val;
-  document.getElementById('pf-cat-label').style.color = '#1a1510';
-  var dd = document.getElementById('pf-cat-dropdown');
-  if (dd) dd.style.display = 'none';
-  renderCategoryDropdown(val);
-}
-
 function renderCategorySelect(selected) {
-  document.getElementById('pf-cat').value = selected || '';
-  document.getElementById('pf-cat-label').textContent = selected || '카테고리 선택';
-  document.getElementById('pf-cat-label').style.color = selected ? '#1a1510' : '#9a8a6a';
-  renderCategoryDropdown(selected);
+  var sel = document.getElementById('pf-cat');
+  if (!sel) return;
+  sel.innerHTML = '';
+  getAllCategories().forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    if (c === selected) opt.selected = true;
+    sel.appendChild(opt);
+  });
   renderCategoryTags();
 }
-
-function renderCategoryDropdown(selected) {
-  var dd = document.getElementById('pf-cat-dropdown');
-  if (!dd) return;
-  dd.innerHTML = '';
-  getAllCategories().forEach(function(c) {
-    var item = document.createElement('div');
-    item.textContent = c;
-    item.style.cssText = 'padding:9px 14px;font-size:13px;cursor:pointer;color:#1a1510;' + (c === selected ? 'background:#f0ead8;font-weight:500;' : '');
-    item.onmouseover = function(){ this.style.background='#f8f4ee'; };
-    item.onmouseout = function(){ this.style.background = (c===selected)?'#f0ead8':''; };
-    item.onclick = function(){ selectCategory(c); };
-    dd.appendChild(item);
-  });
-}
-
-document.addEventListener('click', function(e){
-  var dd = document.getElementById('pf-cat-dropdown');
-  var display = document.getElementById('pf-cat-display');
-  if (dd && display && !display.contains(e.target) && !dd.contains(e.target)) {
-    dd.style.display = 'none';
-  }
-});
 
 function renderCategoryTags() {
   var wrap = document.getElementById('pf-cat-tags');
@@ -2001,13 +2046,16 @@ function addCategory() {
   if (getAllCategories().indexOf(val) > -1) { inp.value=''; return; }
   customCategories.push(val);
   localStorage.setItem('lumiere_categories', JSON.stringify(customCategories));
+  if (window.saveCategoryToFirebase) window.saveCategoryToFirebase(val);
   inp.value = '';
   renderCategorySelect(val);
 }
 
 function removeCategory(idx) {
+  var name = customCategories[idx];
   customCategories.splice(idx, 1);
   localStorage.setItem('lumiere_categories', JSON.stringify(customCategories));
+  if (window.deleteCategoryFromFirebase) window.deleteCategoryFromFirebase(name);
   renderCategorySelect('');
 }
 
