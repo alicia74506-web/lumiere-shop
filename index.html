@@ -257,6 +257,13 @@ footer{background:var(--darker);padding:60px;display:grid;grid-template-columns:
   footer{grid-template-columns:1fr 1fr;gap:30px}
   .footer-bottom{flex-direction:column;gap:12px;text-align:center}
 }
+
+/* MYPAGE */
+.mp-menu{display:block;width:100%;text-align:left;background:none;border:none;padding:14px 20px;font-size:13px;color:#888;cursor:pointer;font-family:'Noto Sans KR',sans-serif;border-left:3px solid transparent;transition:all 0.2s;letter-spacing:0.5px;}
+.mp-menu:hover{color:#1a1510;background:#faf6f0;border-left-color:#e8d8a0;}
+.mp-menu.active{color:#1a1510;font-weight:600;background:#faf6f0;border-left-color:#c9a84c;}
+.mp-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:#1a1510;font-weight:400;letter-spacing:2px;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid #f0ebe0;}
+
 </style>
 <script>
 function openModal(id) { document.getElementById(id).style.display = 'flex'; }
@@ -1423,28 +1430,40 @@ window.addEventListener('DOMContentLoaded', function(){
 
 <!-- 마이페이지 모달 -->
 <div id="mypage-overlay" style="display:none;position:fixed;inset:0;background:#f8f6f2;z-index:4500;overflow-y:auto;font-family:'Noto Sans KR','Montserrat',sans-serif;">
-  <!-- 상단 헤더 바 -->
-  <div style="background:#1a1510;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
-    <p style="font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:4px;color:#c9a84c;font-style:italic;">내 계정</p>
-    <button onclick="closeMypage()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;">×</button>
+  <!-- 상단 헤더 -->
+  <div style="background:#1a1510;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:5px;color:#c9a84c;font-style:italic;">Lumière</p>
+      <span style="color:rgba(255,255,255,0.2);">|</span>
+      <p style="font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.5);">MY ACCOUNT</p>
+    </div>
+    <button onclick="closeMypage()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:22px;cursor:pointer;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">×</button>
   </div>
-  <div style="max-width:1100px;margin:0 auto;padding:48px 48px;">
-    <div style="display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start;min-height:600px;">
+  <div style="max-width:1100px;margin:0 auto;padding:48px 60px;">
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:start;min-height:600px;">
       <!-- 좌측 메뉴 -->
-      <div style="position:sticky;top:80px;height:fit-content;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-        <ul style="list-style:none;padding:0;margin:0;">
-          <li><button onclick="mypageTab('orders')" class="mp-menu" id="mpmenu-orders">주문내역</button></li>
-          <li><button onclick="mypageTab('info')" class="mp-menu" id="mpmenu-info">회원정보</button></li>
-          <li><button onclick="mypageTab('wishlist')" class="mp-menu" id="mpmenu-wishlist">위시리스트</button></li>
-          <li><button onclick="mypageTab('coupons')" class="mp-menu" id="mpmenu-coupons">쿠폰</button></li>
-          <li><button onclick="mypageTab('addresses')" class="mp-menu" id="mpmenu-addresses">주소록</button></li>
-          <li><button onclick="mypageTab('inquiry')" class="mp-menu" id="mpmenu-inquiry">1:1 문의하기</button></li>
-          <li><button onclick="doLogout()" class="mp-menu" style="color:#e05555;border-top:1px solid #f5f0e8;margin-top:8px;">로그아웃</button></li>
-        </ul>
+      <div style="position:sticky;top:90px;height:fit-content;">
+        <!-- 회원 등급 표시 -->
+        <div id="mp-grade-card" style="background:#1a1510;border-radius:8px;padding:20px;margin-bottom:12px;text-align:center;">
+          <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:4px;">MEMBER</p>
+          <p id="mp-grade-name" style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:300;margin-bottom:4px;"></p>
+          <p id="mp-grade-total" style="font-size:11px;color:rgba(255,255,255,0.4);"></p>
+        </div>
+        <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.06);">
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li><button onclick="mypageTab('orders')" class="mp-menu" id="mpmenu-orders">주문내역</button></li>
+            <li><button onclick="mypageTab('info')" class="mp-menu" id="mpmenu-info">회원정보</button></li>
+            <li><button onclick="mypageTab('wishlist')" class="mp-menu" id="mpmenu-wishlist">위시리스트</button></li>
+            <li><button onclick="mypageTab('coupons')" class="mp-menu" id="mpmenu-coupons">쿠폰</button></li>
+            <li><button onclick="mypageTab('addresses')" class="mp-menu" id="mpmenu-addresses">주소록</button></li>
+            <li><button onclick="mypageTab('inquiry')" class="mp-menu" id="mpmenu-inquiry">1:1 문의하기</button></li>
+            <li style="border-top:1px solid #f5f0e8;"><button onclick="doLogout()" class="mp-menu" style="color:#e05555;">로그아웃</button></li>
+          </ul>
+        </div>
       </div>
 
       <!-- 우측 콘텐츠 -->
-      <div style="background:#fff;border-radius:8px;padding:36px;box-shadow:0 2px 12px rgba(0,0,0,0.06);min-height:500px;">
+      <div style="background:#fff;border-radius:8px;padding:40px;box-shadow:0 2px 16px rgba(0,0,0,0.06);min-height:500px;">
 
         <!-- 주문내역 -->
         <div id="mptab-orders" class="mptab">
@@ -1461,59 +1480,75 @@ window.addEventListener('DOMContentLoaded', function(){
         <!-- 회원정보 -->
         <div id="mptab-info" class="mptab" style="display:none;">
           <h3 class="mp-title">회원정보</h3>
-          <div style="display:grid;gap:16px;max-width:520px;">
-            <div>
-              <label class="mp-label">이름</label>
-              <input id="mp-name" class="mp-input" placeholder="이름">
-            </div>
-            <div>
-              <label class="mp-label">현재 비밀번호</label>
-              <input id="mp-pw-current" type="password" class="mp-input" placeholder="현재 비밀번호 입력">
-            </div>
-            <div>
-              <label class="mp-label">새 비밀번호</label>
-              <input id="mp-pw" type="password" class="mp-input" placeholder="새 비밀번호 (변경 시에만 입력)">
-            </div>
-            <div>
-              <label class="mp-label">비밀번호 확인</label>
-              <input id="mp-pw2" type="password" class="mp-input" placeholder="비밀번호 확인" oninput="checkMpPw()">
-              <p id="mp-pw-msg" style="font-size:11px;margin-top:4px;"></p>
-            </div>
-            <div>
-              <label class="mp-label">이메일</label>
-              <input id="mp-email" class="mp-input" placeholder="이메일">
-            </div>
-            <div>
-              <label class="mp-label">휴대폰</label>
-              <input id="mp-phone" class="mp-input" placeholder="010-0000-0000">
-            </div>
-            <div>
-              <label class="mp-label">우편번호</label>
-              <div style="display:flex;gap:8px;">
-                <input id="mp-postcode" class="mp-input" placeholder="우편번호" style="width:140px;">
-                <button onclick="searchMpAddress()" style="background:#1a1a1a;color:#fff;border:none;padding:10px 16px;border-radius:4px;font-size:12px;cursor:pointer;">검색</button>
+          <div style="max-width:560px;">
+
+            <!-- 기본정보 -->
+            <div style="border:1px solid #f0ebe0;border-radius:8px;padding:24px;margin-bottom:20px;">
+              <p style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">기본 정보</p>
+              <div style="display:grid;gap:14px;">
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">이름</label>
+                  <input id="mp-name" type="text" placeholder="이름" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;">
+                </div>
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">이메일</label>
+                  <input id="mp-email" type="email" placeholder="이메일" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;">
+                </div>
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">휴대폰</label>
+                  <input id="mp-phone" type="tel" placeholder="010-0000-0000" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;font-family:'Noto Sans KR',sans-serif;">
+                </div>
               </div>
             </div>
-            <div>
-              <label class="mp-label">주소</label>
-              <input id="mp-address" class="mp-input" placeholder="기본주소">
+
+            <!-- 비밀번호 변경 -->
+            <div style="border:1px solid #f0ebe0;border-radius:8px;padding:24px;margin-bottom:20px;">
+              <p style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">비밀번호 변경</p>
+              <div style="display:grid;gap:14px;">
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">현재 비밀번호</label>
+                  <input id="mp-pw-current" type="password" placeholder="현재 비밀번호" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">새 비밀번호</label>
+                  <input id="mp-pw" type="password" placeholder="새 비밀번호 (변경 시에만 입력)" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="font-size:11px;color:#999;display:block;margin-bottom:6px;letter-spacing:1px;">새 비밀번호 확인</label>
+                  <input id="mp-pw2" type="password" placeholder="비밀번호 확인" oninput="checkMpPw()" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;">
+                  <p id="mp-pw-msg" style="font-size:11px;margin-top:6px;min-height:16px;"></p>
+                </div>
+              </div>
             </div>
-            <div>
-              <input id="mp-address-detail" class="mp-input" placeholder="상세주소">
+
+            <!-- 주소 -->
+            <div style="border:1px solid #f0ebe0;border-radius:8px;padding:24px;margin-bottom:20px;">
+              <p style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:16px;text-transform:uppercase;">배송 주소</p>
+              <div style="display:grid;gap:10px;">
+                <div style="display:flex;gap:8px;">
+                  <input id="mp-postcode" type="text" placeholder="우편번호" readonly style="flex:1;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;background:#faf8f5;box-sizing:border-box;">
+                  <button onclick="searchMpAddress()" style="background:#1a1510;color:#fff;border:none;padding:11px 20px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;letter-spacing:1px;">검색</button>
+                </div>
+                <input id="mp-address" type="text" placeholder="기본주소" readonly style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;background:#faf8f5;box-sizing:border-box;">
+                <input id="mp-address-detail" type="text" placeholder="상세주소" style="width:100%;padding:11px 14px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;outline:none;box-sizing:border-box;">
+              </div>
             </div>
-            <div style="background:#f8f8f8;padding:16px;border-radius:4px;">
-              <p style="font-size:12px;color:#666;margin-bottom:10px;">수신 동의</p>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px;cursor:pointer;">
+
+            <!-- 수신 동의 -->
+            <div style="border:1px solid #f0ebe0;border-radius:8px;padding:20px;margin-bottom:24px;">
+              <p style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:14px;text-transform:uppercase;">수신 동의</p>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#333;cursor:pointer;margin-bottom:10px;">
                 <input type="checkbox" id="mp-email-agree"> 이메일 수신 동의
               </label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#333;cursor:pointer;">
                 <input type="checkbox" id="mp-sms-agree"> SMS 수신 동의
               </label>
             </div>
-            <p id="mp-info-err" style="color:#e05555;font-size:12px;"></p>
+
+            <p id="mp-info-err" style="color:#e05555;font-size:12px;margin-bottom:12px;min-height:16px;"></p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <button onclick="saveMyInfo()" style="padding:14px;background:#1a1a1a;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;letter-spacing:1px;">회원 정보 수정</button>
-              <button onclick="withdrawMember()" style="padding:14px;background:#fff;color:#999;border:1px solid #ddd;border-radius:4px;font-size:13px;cursor:pointer;">계정 탈퇴</button>
+              <button onclick="saveMyInfo()" style="padding:14px;background:#1a1510;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans KR',sans-serif;">회원 정보 수정</button>
+              <button onclick="withdrawMember()" style="padding:14px;background:#fff;color:#aaa;border:1px solid #e0d4b8;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">계정 탈퇴</button>
             </div>
           </div>
         </div>
