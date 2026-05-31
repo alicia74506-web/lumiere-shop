@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lumière — Art of Scents</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -411,6 +412,22 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
+<style>
+.atab {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 13px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif;
+  background: rgba(255,255,255,0.5); border: 0.5px solid rgba(180,160,120,0.35);
+  color: #8a7a5a; border-radius: 6px; cursor: pointer;
+  transition: all 0.15s; letter-spacing: 0.01em; white-space: nowrap;
+}
+.atab i { font-size: 14px; opacity: 0.8; }
+.atab:hover { background: rgba(255,255,255,0.85); color: #5a4a2a; border-color: rgba(180,160,120,0.6); }
+.atab.active {
+  background: #1a1510; color: #c9a84c;
+  border-color: #1a1510;
+}
+.atab.active i { opacity: 1; }
+</style>
 </head>
 <body>
 
@@ -1091,17 +1108,17 @@ window.addEventListener('DOMContentLoaded', function(){
   <div style="background:#efe8da;border-bottom:1px solid #d4c4a0;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
     <div style="font-family:'Playfair Display','Cormorant Garamond',serif;font-size:22px;letter-spacing:4px;color:#1a1510;font-style:italic;">Lumière Admin</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button onclick="adminTab('dashboard')" class="atab active" id="atab-dashboard">📊 대시보드</button>
-      <button onclick="adminTab('products')" class="atab" id="atab-products">🛍 상품관리</button>
-      <button onclick="adminTab('orders')" class="atab" id="atab-orders">📦 주문/재고</button>
-      <button onclick="adminTab('customers')" class="atab" id="atab-customers">👥 고객DB</button>
-      <button onclick="adminTab('reviews')" class="atab" id="atab-reviews">💬 리뷰</button>
-      <button onclick="adminTab('marketing')" class="atab" id="atab-marketing">📤 마케팅</button>
-      <button onclick="adminTab('delivery')" class="atab" id="atab-delivery">🚚 배송관리</button>
-      <button onclick="adminTab('coupons')" class="atab" id="atab-coupons">🎟 쿠폰</button>
-      <button onclick="adminTab('settlement')" class="atab" id="atab-settlement">💰 정산</button>
-      <button onclick="adminTab('members')" class="atab" id="atab-members">⭐ 회원등급</button>
-      <button onclick="adminTab('banner')" class="atab" id="atab-banner">🖼 배너</button>
+      <button onclick="adminTab('dashboard')" class="atab active" id="atab-dashboard"><i class="ti ti-layout-dashboard"></i> 대시보드</button>
+      <button onclick="adminTab('products')" class="atab" id="atab-products"><i class="ti ti-package"></i> 상품관리</button>
+      <button onclick="adminTab('orders')" class="atab" id="atab-orders"><i class="ti ti-clipboard-list"></i> 주문/재고</button>
+      <button onclick="adminTab('customers')" class="atab" id="atab-customers"><i class="ti ti-users"></i> 고객DB</button>
+      <button onclick="adminTab('reviews')" class="atab" id="atab-reviews"><i class="ti ti-message-circle"></i> 리뷰</button>
+      <button onclick="adminTab('marketing')" class="atab" id="atab-marketing"><i class="ti ti-speakerphone"></i> 마케팅</button>
+      <button onclick="adminTab('delivery')" class="atab" id="atab-delivery"><i class="ti ti-truck"></i> 배송관리</button>
+      <button onclick="adminTab('coupons')" class="atab" id="atab-coupons"><i class="ti ti-ticket"></i> 쿠폰</button>
+      <button onclick="adminTab('settlement')" class="atab" id="atab-settlement"><i class="ti ti-coin"></i> 정산</button>
+      <button onclick="adminTab('members')" class="atab" id="atab-members"><i class="ti ti-star"></i> 회원등급</button>
+      <button onclick="adminTab('banner')" class="atab" id="atab-banner"><i class="ti ti-photo"></i> 배너</button>
     </div>
     <button onclick="closeAdmin()" style="background:none;border:1px solid #c9a84c;color:#8a6a2a;padding:8px 16px;cursor:pointer;font-size:12px;border-radius:4px;">닫기</button>
   </div>
