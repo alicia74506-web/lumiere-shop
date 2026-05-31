@@ -1473,6 +1473,17 @@ window.addEventListener('DOMContentLoaded', function(){
             <button onclick="filterMyOrders('week')" class="mp-filter" id="mpof-week">1주일</button>
             <button onclick="filterMyOrders('month')" class="mp-filter" id="mpof-month">1개월</button>
             <button onclick="filterMyOrders('3month')" class="mp-filter" id="mpof-3month">3개월</button>
+            <button onclick="toggleCustomDate()" class="mp-filter" id="mpof-custom">직접 선택</button>
+          </div>
+          <!-- 직접 선택 날짜 범위 -->
+          <div id="mp-custom-date" style="display:none;margin-top:12px;display:none;align-items:center;gap:8px;flex-wrap:wrap;">
+            <input type="date" id="mpof-from" style="padding:8px 12px;border:1px solid #e0d4b8;border-radius:4px;font-size:12px;outline:none;">
+            <span style="color:#999;font-size:12px;">~</span>
+            <input type="date" id="mpof-to" style="padding:8px 12px;border:1px solid #e0d4b8;border-radius:4px;font-size:12px;outline:none;">
+            <button onclick="filterMyOrders('custom')" style="padding:8px 16px;background:#1a1510;color:#fff;border:none;border-radius:4px;font-size:12px;cursor:pointer;">조회</button>
+          </div>
+          <p style="font-size:11px;color:#aaa;margin-top:8px;">* 1년 이상 주문내역은 고객센터(070-7658-1046)로 문의해 주세요.</p>
+          <div style="display:none;">
           </div>
           <div id="my-order-list"></div>
         </div>
@@ -2975,9 +2986,28 @@ function withdrawMember() {
   alert('탈퇴가 완료되었습니다.');
 }
 
+function toggleCustomDate() {
+  var el = document.getElementById('mp-custom-date');
+  if (!el) return;
+  var isShown = el.style.display === 'flex';
+  el.style.display = isShown ? 'none' : 'flex';
+  ['today','week','month','3month'].forEach(function(p){ var b=document.getElementById('mpof-'+p); if(b) b.classList.remove('active'); });
+  var btn = document.getElementById('mpof-custom'); if(btn) btn.classList.toggle('active', !isShown);
+  // 기본값: 최근 1년
+  if (!isShown) {
+    var now = new Date();
+    var from = new Date(now); from.setFullYear(from.getFullYear()-1);
+    document.getElementById('mpof-from').value = from.toISOString().slice(0,10);
+    document.getElementById('mpof-to').value = now.toISOString().slice(0,10);
+  }
+}
+
 function filterMyOrders(period) {
-  ['today','week','month','3month'].forEach(function(p){ var el=document.getElementById('mpof-'+p); if(el) el.classList.remove('active'); });
+  ['today','week','month','3month','custom'].forEach(function(p){ var el=document.getElementById('mpof-'+p); if(el) el.classList.remove('active'); });
   var btn = document.getElementById('mpof-'+period); if(btn) btn.classList.add('active');
+  if (period !== 'custom') {
+    var cd = document.getElementById('mp-custom-date'); if(cd) cd.style.display='none';
+  }
   var u = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
   if (!u) return;
   var orders = getOrders().filter(function(o){ return o.customerEmail===u.email; });
@@ -2986,6 +3016,19 @@ function filterMyOrders(period) {
   else if (period==='week') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-7*86400000); });
   else if (period==='month') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-30*86400000); });
   else if (period==='3month') orders = orders.filter(function(o){ return new Date(o.date) >= new Date(now-90*86400000); });
+  else if (period==='custom') {
+    var from = document.getElementById('mpof-from').value;
+    var to = document.getElementById('mpof-to').value;
+    if (!from || !to) return;
+    var fromD = new Date(from); var toD = new Date(to); toD.setHours(23,59,59);
+    // 1년 초과 체크
+    var diff = (toD - fromD) / (1000*60*60*24);
+    if (diff > 366) {
+      alert('1년 이상의 주문내역은 고객센터(070-7658-1046)로 문의해 주세요.');
+      return;
+    }
+    orders = orders.filter(function(o){ var d=new Date(o.date); return d>=fromD && d<=toD; });
+  }
   var el = document.getElementById('my-order-list');
   if (!el) return;
   if (orders.length===0) { el.innerHTML='<p style="color:#aaa;text-align:center;padding:40px;">주문 내역이 없습니다.</p>'; return; }
