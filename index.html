@@ -384,6 +384,7 @@ function doLogin() {
   updateNavForLogin(user);
   checkGradeUpPopup(user);
   checkBirthdayCoupon(user);
+  renderMyGradeBar();
 }
 
 function doJoin() {
@@ -750,6 +751,57 @@ document.addEventListener('DOMContentLoaded', async function(){
   <p class="section-label">Art of Scents</p>
   <h2 class="section-title"><em>Shop</em></h2>
   <p style="color:var(--text-light);font-size:14px">향이 머무는 모든 공간을 위한 뤼미에르 컬렉션</p>
+
+  <!-- 등급 기준 안내 (Shop 위) -->
+  <div style="margin:40px 0 32px;padding:32px 40px;background:#faf6f0;border:0.5px solid #e0d4b8;border-radius:8px;">
+    <p style="font-size:10px;letter-spacing:3px;color:#c9a84c;margin-bottom:20px;font-family:'Montserrat',sans-serif;">MEMBERSHIP GRADE</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+      <div style="padding:20px 14px;border:0.5px solid #e0d4b8;border-radius:6px;text-align:center;background:#fff;">
+        <p style="font-size:9px;letter-spacing:2px;color:#9a8a6a;margin-bottom:8px;">GENERAL</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#1a1510;margin-bottom:6px;">일반</p>
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:4px;">0원 ~</p>
+        <p style="font-size:10px;color:#bbb;">기본 혜택</p>
+      </div>
+      <div style="padding:20px 14px;border:0.5px solid #b0b8c1;border-radius:6px;text-align:center;background:#f8f9fa;">
+        <p style="font-size:9px;letter-spacing:2px;color:#6c757d;margin-bottom:8px;">SILVER</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#1a1510;margin-bottom:6px;">실버</p>
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:4px;">100만원 ~</p>
+        <p style="font-size:10px;color:#6c757d;font-weight:500;">무료배송 (상시)</p>
+      </div>
+      <div style="padding:20px 14px;border:0.5px solid #cd7f32;border-radius:6px;text-align:center;background:#fdf8f4;">
+        <p style="font-size:9px;letter-spacing:2px;color:#cd7f32;margin-bottom:8px;">BRONZE</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#1a1510;margin-bottom:6px;">브론즈</p>
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:4px;">200만원 ~</p>
+        <p style="font-size:10px;color:#cd7f32;font-weight:500;">상시 5% 자동 할인</p>
+      </div>
+      <div style="padding:20px 14px;border:0.5px solid #c9a84c;border-radius:6px;text-align:center;background:#faf6f0;">
+        <p style="font-size:9px;letter-spacing:2px;color:#c9a84c;margin-bottom:8px;">GOLD</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#1a1510;margin-bottom:6px;">골드</p>
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:4px;">500만원 ~</p>
+        <p style="font-size:10px;color:#c9a84c;font-weight:500;">상시 10% 자동 할인</p>
+      </div>
+      <div style="padding:20px 14px;border:1.5px solid #4fc3f7;border-radius:6px;text-align:center;background:#f0faff;">
+        <p style="font-size:9px;letter-spacing:2px;color:#0288d1;margin-bottom:8px;">DIAMOND</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#1a1510;margin-bottom:6px;">다이아몬드</p>
+        <p style="font-size:11px;color:#9a8a6a;margin-bottom:4px;">1,000만원 ~</p>
+        <p style="font-size:10px;color:#0288d1;font-weight:500;">상시 15% 자동 할인</p>
+      </div>
+    </div>
+    <!-- 로그인한 고객 현재 등급 표시 -->
+    <div id="my-grade-bar" style="display:none;margin-top:20px;padding:14px 20px;background:#fff;border:0.5px solid #c9a84c;border-radius:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span style="font-size:10px;letter-spacing:2px;color:#9a8a6a;font-family:'Montserrat',sans-serif;">내 등급</span>
+        <span id="my-grade-name" style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#c9a84c;margin-left:12px;"></span>
+        <span id="my-grade-benefit" style="font-size:12px;color:#5a4a2a;margin-left:8px;"></span>
+      </div>
+      <div style="text-align:right;">
+        <span style="font-size:11px;color:#9a8a6a;">누적 구매액 </span>
+        <span id="my-grade-total" style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#c9a84c;"></span>
+        <span id="my-grade-next" style="font-size:11px;color:#9a8a6a;margin-left:8px;"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- 등급 혜택 안내 -->
   <div id="shop-grade-banner" style="display:none;background:#faf6f0;border:1px solid #e0d4b8;border-radius:6px;padding:16px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <div>
@@ -3165,6 +3217,9 @@ function submitOrder() {
   closeCheckout();
   closeCart();
 
+  // ✅ 주문 후 등급 자동 업데이트
+  autoUpdateGrade(email);
+
   // Shop 재고 업데이트
   renderShop(currentShopFilter);
 
@@ -3180,7 +3235,74 @@ function closeOrderComplete() {
 // ===== END 주문/결제 =====
 
 
-// ===== CLOUDINARY 업로드 =====
+// ===== 자동 등급 업데이트 =====
+function autoUpdateGrade(email) {
+  var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
+  var orders = getOrders();
+  var uIdx = users.findIndex(function(u){ return u.email === email; });
+  if (uIdx < 0) return;
+  var u = users[uIdx];
+  var total = orders.filter(function(o){ return o.customerEmail===email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+  var newGrade = getGrade(total);
+  var oldGrade = u.grade || '일반';
+  // 등급 저장
+  users[uIdx].grade = newGrade.name;
+  users[uIdx].gradeUpShown = false;
+  localStorage.setItem('lumiere_users', JSON.stringify(users));
+  // 현재 로그인 사용자도 업데이트
+  var current = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  if (current && current.email === email) {
+    current.grade = newGrade.name;
+    localStorage.setItem('lumiere_current', JSON.stringify(current));
+  }
+  // 등급 업그레이드 시 팝업
+  if (newGrade.name !== oldGrade && newGrade.name !== '일반') {
+    // 등급업 쿠폰 자동 발급
+    var couponCode = 'GRADE-' + newGrade.name.toUpperCase() + '-' + Date.now().toString().slice(-4);
+    var coupons = getCoupons();
+    coupons.push({ code: couponCode, discount: 10, type: 'percent', expiry: '', reason: '등급 달성 축하', target: email, used: 0, createdAt: new Date().toISOString() });
+    saveCoupons(coupons);
+    if (!users[uIdx].coupons) users[uIdx].coupons = [];
+    users[uIdx].coupons.push({code: couponCode, discount: 10, type: 'percent', expiry:'', used: false});
+    localStorage.setItem('lumiere_users', JSON.stringify(users));
+    showGradeUpPopup(newGrade, u);
+  }
+  // Shop 등급 바 갱신
+  renderMyGradeBar();
+}
+
+function renderMyGradeBar() {
+  var current = JSON.parse(localStorage.getItem('lumiere_current') || 'null');
+  var bar = document.getElementById('my-grade-bar');
+  if (!bar) return;
+  if (!current) { bar.style.display = 'none'; return; }
+  var orders = getOrders();
+  var total = orders.filter(function(o){ return o.customerEmail===current.email && o.status!=='취소/환불'; }).reduce(function(s,o){ return s+(o.amount||0); },0);
+  var g = getGrade(total);
+  var benefits = g.freeShipping ? '무료배송 적용 중' : '기본 혜택';
+  if (g.discount > 0) benefits = g.discount+'% 상시 할인 + 무료배송 적용 중';
+  var nextGrade = null;
+  var nextAmount = 0;
+  if (total < 1000000) { nextGrade = '실버'; nextAmount = 1000000 - total; }
+  else if (total < 2000000) { nextGrade = '브론즈'; nextAmount = 2000000 - total; }
+  else if (total < 5000000) { nextGrade = '골드'; nextAmount = 5000000 - total; }
+  else if (total < 10000000) { nextGrade = '다이아몬드'; nextAmount = 10000000 - total; }
+  var nameEl = document.getElementById('my-grade-name');
+  var benefitEl = document.getElementById('my-grade-benefit');
+  var totalEl = document.getElementById('my-grade-total');
+  var nextEl = document.getElementById('my-grade-next');
+  if (nameEl) nameEl.textContent = current.name + '님 · ' + g.name;
+  if (benefitEl) benefitEl.textContent = benefits;
+  if (totalEl) totalEl.textContent = '₩' + total.toLocaleString();
+  if (nextEl) nextEl.textContent = nextGrade ? ('다음 등급 ' + nextGrade + '까지 ₩' + nextAmount.toLocaleString() + ' 남음') : '최고 등급 달성!';
+  bar.style.display = 'flex';
+}
+
+// 로그인 시 등급 바 갱신
+window.addEventListener('DOMContentLoaded', function(){
+  setTimeout(renderMyGradeBar, 300);
+});
+// ===== END 자동 등급 업데이트 =====
 var CLOUDINARY_CLOUD = 'dyvrqk3eh';
 var CLOUDINARY_PRESET = 'lumiere';
 
