@@ -155,8 +155,8 @@ section{padding:100px 60px}
 /* PARTNERS */
 #partners{background:var(--white);text-align:center}
 .partners-stats{display:flex;justify-content:center;gap:80px;margin:60px 0}
-.stat-item{text-align:center}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:56px;color:var(--gold);font-weight:300;line-height:1}
+.stat-item{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:56px;color:var(--gold);font-weight:300;line-height:1;height:56px;display:flex;align-items:center;justify-content:center}
 .stat-label{font-size:11px;letter-spacing:3px;color:var(--text-light);margin-top:8px}
 .partners-logos{display:flex;justify-content:center;gap:60px;align-items:center;flex-wrap:wrap;margin:40px 0;padding:40px;border-top:1px solid #eee;border-bottom:1px solid #eee}
 .partner-logo{font-size:13px;letter-spacing:3px;color:var(--text-light);font-weight:500}
@@ -335,11 +335,11 @@ function doLogin() {
   var email = document.getElementById('login-email').value.trim();
   var pw = document.getElementById('login-pw').value;
   var err = document.getElementById('login-error');
-  err.textContent = '';
-  if (!email || !pw) { err.textContent = '이메일과 비밀번호를 입력해주세요.'; return; }
+  if (err) err.textContent = '';
+  if (!email || !pw) { if (err) err.textContent = '이메일과 비밀번호를 입력해주세요.'; return; }
   // 어드민 하드코딩 로그인
-  if (email === 'alicia@kwellroutine.com' && pw === 'Lumierehaus1!') {
-    var adminUser = {name:'Alicia',email:'alicia@kwellroutine.com',pw:'Lumierehaus1!',grade:'VIP',point:0};
+  if (email === 'alicia@kwellroutine.com' && pw === 'Jin723') {
+    var adminUser = {name:'Alicia',email:'alicia@kwellroutine.com',pw:'Jin723',grade:'VIP',point:0};
     localStorage.setItem('lumiere_current', JSON.stringify(adminUser));
     closeModal('login-modal');
     updateNavForLogin(adminUser);
@@ -347,7 +347,7 @@ function doLogin() {
   }
   var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
   var user = users.find(function(u){ return u.email === email && u.pw === pw; });
-  if (!user) { err.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.'; return; }
+  if (!user) { if (err) err.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.'; return; }
   localStorage.setItem('lumiere_current', JSON.stringify(user));
   closeModal('login-modal');
   updateNavForLogin(user);
