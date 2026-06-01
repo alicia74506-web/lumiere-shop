@@ -337,6 +337,14 @@ function doLogin() {
   var err = document.getElementById('login-error');
   err.textContent = '';
   if (!email || !pw) { err.textContent = '이메일과 비밀번호를 입력해주세요.'; return; }
+  // 어드민 하드코딩 로그인
+  if (email === 'alicia@kwellroutine.com' && pw === 'Lumierehaus1!') {
+    var adminUser = {name:'Alicia',email:'alicia@kwellroutine.com',pw:'Lumierehaus1!',grade:'VIP',point:0};
+    localStorage.setItem('lumiere_current', JSON.stringify(adminUser));
+    closeModal('login-modal');
+    updateNavForLogin(adminUser);
+    return;
+  }
   var users = JSON.parse(localStorage.getItem('lumiere_users') || '[]');
   var user = users.find(function(u){ return u.email === email && u.pw === pw; });
   if (!user) { err.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.'; return; }
@@ -780,7 +788,7 @@ document.addEventListener('DOMContentLoaded', async function(){
   <p class="section-label" style="text-align:center">Partners</p>
   <h2 class="section-title" style="text-align:center">함께한 <em>브랜드들</em></h2>
   <div class="partners-stats">
-    <div class="stat-item"><div class="stat-num">Allergy<br>Reduce</div><div class="stat-label">알러지 저감 원료</div></div>
+    <div class="stat-item"><div class="stat-num" style="font-size:32px;letter-spacing:1px;line-height:1.2;">Allergy Reduce</div><div class="stat-label">알러지 저감 원료</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">천연 원료</div></div>
     <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">맞춤 향 설계</div></div>
   </div>
