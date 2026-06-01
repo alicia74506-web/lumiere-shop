@@ -1985,6 +1985,44 @@ function searchAddress() {
 // ===== ADMIN =====
 var ADMIN_EMAIL = 'alicia@kwellroutine.com';
 
+function submitContact() {
+  var name = document.getElementById('cf-name').value.trim();
+  var email = document.getElementById('cf-email').value.trim();
+  var company = document.getElementById('cf-company').value.trim();
+  var phone = document.getElementById('cf-phone').value.trim();
+  var service = document.getElementById('cf-service').value;
+  var message = document.getElementById('cf-message').value.trim();
+  var result = document.getElementById('cf-result');
+  if (!name || !email || !message) {
+    result.style.color = '#e53935';
+    result.textContent = '성함, 이메일, 문의 내용은 필수입니다.';
+    return;
+  }
+  result.style.color = '#888';
+  result.textContent = '전송 중...';
+  fetch('https://formspree.io/f/mwvypbwg', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify({name:name, email:email, company:company, phone:phone, service:service, message:message})
+  }).then(function(r) {
+    if (r.ok) {
+      result.style.color = '#a8906a';
+      result.textContent = '문의가 접수되었습니다. 빠르게 연락드리겠습니다.';
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-company').value = '';
+      document.getElementById('cf-phone').value = '';
+      document.getElementById('cf-message').value = '';
+    } else {
+      result.style.color = '#e53935';
+      result.textContent = '전송에 실패했습니다. 다시 시도해주세요.';
+    }
+  }).catch(function() {
+    result.style.color = '#e53935';
+    result.textContent = '네트워크 오류가 발생했습니다.';
+  });
+}
+
 function openAdmin() {
   document.getElementById('admin-panel').style.display = 'block';
   adminTab('dashboard');
